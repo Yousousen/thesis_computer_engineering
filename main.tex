@@ -874,6 +874,8 @@ O\\
 D\\
 O\\
 In this chapter we present the results of our research. First we will present our choice of hardware and choice of operating system.
+\par
+All code and documentation can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our github repository}.
 %    • weergave van de resultaten
 %    • beschrijving toe te passen theorie (let op: dit betekent dat er een deelvraag is die over de theorie gaat)
 %    • bespreek de resultaten in een logische volgorde (per deelvraag)
@@ -948,6 +950,23 @@ There are various options to add additional measuring devices to the \gls{pi}. O
 \end{itemize}
 
 Furthermore, the Sense HAT has a humidity sensor, a  pressure sensor and an on board joystick. These are not needed for the prototype of the safety module, but could be useful for further releases of the safety module. For example, the joystick can be used for adding minimal control support for when the joystick of Rose her operator does not work. The humidity sensor and pressure sensor could be used to get more detailed information on the environment a care robot is located in.
+\par
+% TODO: ref to the chapter 2 section where that is described.
+Figure \ref{sensehat} shows the sense HAT. The components of interest for us in this research are the the inertial measurement unit (IMU), labeled \texttt{ACCEL/GYRO/MAG}, which contain the accelerometer, the gyroscope and the magnetometer, and the LED matrix. The name of the IMU itself is \textit{LSM9DS1}. Figure \ref{} shows the orientation of the IMU. The orientation is such that if we lay down the \gls{pi} with Sense HAT attached in front of us, in such a way that the Ethernet port points towards us, then that is the direction labeled X. As we can see, the Z direction denotes the up -down direction, and the only other direction left is the Y direction. The fact that we live in a universe with three spatial dimensions complicates the way we want to measure acceleration a bit. The measuring of the quantities of acceleration and angular displacement will be elaborated in Section \ref{}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/sense_hat_correct.jpg}
+    \caption{Raspberry pi sense hat, source: \cite{sensehat}}
+    \label{fig:sensehat}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/imu_orientation.png}
+    \caption{Axis of the IMU. source \cite{lsm9ds1}}
+    \label{fig:imu_orientation}
+\end{figure}
 
 \subsection{Operating System}
 \label{Operating System}
@@ -956,9 +975,9 @@ In our literature review in Section \ref{tOS} we saw that Linux distributions ar
 As was shortly mentioned in the description of the \gls{pi} in Section \ref{Main component} and as was elaborated in detail in the literature review of Section \ref{tOS}, the two prominent options for adding real-time support to Linux distributions are real-time Linux and the Xenomai framework. In Section \ref{tOS} we also saw a comparison between these two options, with as result that Xenomai performed better in terms of meeting hard real-time requirements. Now, for the prototype safety module that is developed in this research, we only aim for soft real-time performance. Still, further versions of the safety module will need to support hard-real-time performance, and we therefore choose to use the cokernel setup of the Xenomai framework over Real-time Linux as our operating system.
 \par 
 % TODO: Gloss system call
-As was shortly mentioned in Section \ref{tOS}, Xenomai provides various skins. These skins are interfaces to the real-time functionality that the Xenomai framework provides. We choose to work with the POSIX skin. The POSIX skin provides the functionality of the Xenomai framework through the interface of a subset of POSIX system calls. The following services are provided (\cite{posix_xenomai}:
+As was shortly mentioned in Section \ref{tOS}, Xenomai provides various skins. These skins are interfaces to the real-time functionality that the Xenomai framework provides. We choose to work with the POSIX skin. The POSIX skin provides the functionality of the Xenomai framework through the interface of a subset of POSIX system calls. The following services are provided (\cite{posix_xenomai}):
 
-\begin{itemize}
+\begin{itemize}\label{posix_wrapped}
     \item Clocks and timers
     \item Condition variables
     \item Message queues
@@ -971,7 +990,121 @@ As was shortly mentioned in Section \ref{tOS}, Xenomai provides various skins. T
 
 These POSIX services are wrapped around with Xenomai versions of the calls. For example, if one calls the \mintinline{c}{pthread_create} function to create a new thread in the C or C++ programming language, what is actually called is a real-time implementation of the system call provided by the Xenomai framework.
 \par
-The reason we choose to work with the POSIX skin as opposed to other skins is that the POSIX skin avoids the need to rewrite device drivers written for standard, non-Xenomai Linux, as such device drivers often use the POSIX services given in the previous. In our case this avoids the need to rewrite the driver for the Sense HAT. Likewise, \acrshort{ros} is targeted for standard Linux and not Xenomai, so using the POSIX skin also avoids having to rewrite \acrshort{ros} services.
+% TODO: Ref to results S4
+The reason we choose to work with the POSIX skin as opposed to other skins is that the POSIX skin avoids the need to rewrite device drivers written for standard, non-Xenomai Linux, as such device drivers often use the POSIX services given in the previous. In our case this avoids the need to rewrite the driver for the Sense HAT. Likewise, \acrshort{ros} is targeted for standard Linux and not Xenomai, so using the POSIX skin also avoids having to rewrite \acrshort{ros} services. Section \ref{} shows how we implemented the safety module using the xenomai framework.
+\\\\
+We have built \acrshort{ros} for Raspbian and installed it on our system. For this research we will simulate interaction with care robot rose and ROS and will not use this installation, however. The reason we installed \acrshort{ros} is to show the feasibility of using the system of the \gls{pi}, raspbian with xenomai as a whole.
+\par
+% TODO: ref to dezyne chapter.
+Figure \ref{} gives a high overview of this system as a whole, visualised as a stack. On the bottom we have the \gls{pi} with the Sense HAT, this denotes our hardware. On top of that we have got the Linux kernel and the Xenomai cokernel, which run besides each other. Then we have got Raspbian Buster, the operating system. On top we see RTIMULib, Dezyne and \acrshort{ros}. RTIMULib is the library used to communicate with the sense hat. Dezyne is the modelling language we use, which uses its own runtime library. The use of Dezyne is elaborated extensively in its own chapter, Chapter \ref{}. The reason RTIMULib and \acrshort{ros} are shown on top, despite the fact that both communicate with the hardware of the bottom layer, is because RTIMULib and \acrshort{ros} are both libraries called from user space. We can say that anytime we want to access a hardware device in our proram we traverse the stack from top to bottom.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/os_environment_stack.png}
+    \caption{Safety module system stack}
+    \label{fig:my_label}
+\end{figure}
+
+
+% TODO: ref to section
+%       fix list reference (actually ref to the list and not the section.
+Let us look at a communication scheme of the system and how the Xenomai framework provides us with real-time operation of the safety module. In Figure \ref{fig:communication_scheme} an overview of the communication scheme of the system is given. On the left side we can see our program and the Xenomai core. These are are in \textit{primary mode}, primary mode is the real-time domain; the part of the system that operates real-time, because it is governed by the Xenomai cokernel. This is due to that all scheduling of tasks in primary mode is handled by the Xenomai core. The Xenomai framework provides us with the ability to make a subset of system calls, the ones from the items listed in List \ref{posix_wrapped} without leaving primary mode. We depicted Dezyne to be inside our program, in primary mode. The code that Dezyne generates from the model is essentially the control loop of the safety module system. This control loops executes five checks, this is why there are five lines of communication going through the entire system in the overview of Figure \ref{fig:communication_scheme}. These checks are checks on five aspects of the robot: the kinetic energy, the rotational energy , the grip arm strength, both force and torque, and grip arm position. These checks are elaborated extensively in the subsequent Results sections. RTIMULib and ROS communicate with device drivers written for the standard Linux kernel, meaning they do not run in primary mode, but \textit{secondary mode}. Secondary mode is the non-real-time domain; the part of the system that does not operate in real-time and is governed by the standard Linux kernel. This brings us to a problem. Our program needs to communicate with these libraries, and therefore with these device drivers, but if it does so it would make a mode switch by moving from primary mode to secondary mode. One solution would be to reimplement all used device drivers to work with the xenomai framework, so that they can run in primary mode. This solution, however, takes a lot of development time and research into how to convert standard linux drivers to real-time drivers. Luckily, Xenomai provides us with another solution: the use of XDDP sockets. XDDP sockets allow the part of the system running in primary mode to communicate data with the part of the system running in secondary mode, without the former leaving primary mode. This is good because now we can set up the system as follows. In primary mode the control loop runs in real-time governed by the Xenomai cokernel. In secondary mode, threads retrieving data from the sensors are running and provide their data on the XDDP socket, which can then be read by the threads of the program running in primary mode. This set up gets rid of the problem of our control loop needing to leave primary mode to access sensor data. However, now, there is another problem luring in the background. What should we do when the sensor data is not provided by the non-real-time thread when a real-time thread requires it? We go into more detail on this problem in Section \ref{}, but essentially the real-time checks just keep going regardless of whether there is data provided by the non-real-threads. That is to say, the checks do not block if there is no data available.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/communication_scheme.png}
+    \caption{Distinction between primary mode and secondary mode}
+    \label{fig:communication_scheme}
+\end{figure}
+
+\section{Retrieving and Using Sensor Data}
+In this section we elaborate our results on how to retrieve sensor data and use this data to check whether the safety module has performs unsafe actions.
+\par
+In Section \ref{Assignment specification} we defined unsafe behaviour as behavior that could result in injury to humans or damage to the environment by collision, clamping or pinching of the care robot with an object or human. The goal of the safety module is to provide a second layer of safety checks upon the already existing safety checks by the care robot itself. In Section \ref{Safety in care robots} we explored the how existing research measures safety in robots. We implement a rudimentary form of some of these safety checks by looking at four aspects of the care robot. These are: its kinetic energy, its rotational energy, its grip arm strength and the position of the grip arm. These aspects were given on the Risk Analysis for additional safety measures of robot Rose (\cite{risk_analysis_additional}).
+
+\subsection{Sensors on the safety module}
+The sensors of the Sense HAT of the safety module are used to check the kinetic energy and rotational energy of the robot. The safety module is attached to the care robot, and should be attached in a way such that the x-axis (see Figure \ref{fig:imu_orientation}) points forward.
+\par
+We make use of the RTIMULib library, an open-source library that provides us an application programming interface (API) to interact with the accelerometer, gyroscope and magnetometer of the LSM91DS1, the inertial measurement unit of the Sense HAT \cite{rtimulib}. With the use of a Kalman-filter the library provides fused data of the accelerometer, gyroscope and magnetometer. Kalman-filtering is a technique to provide an accurate measure of, in our case, the angular orientation of the safety module.
+
+\subsubsection{Kinetic energy}
+\label{Kinetic energy}
+First we will look at the aspect of kinetic energy. In classical mechanics, kinetic energy is defined as follows:
+
+\begin{equation} \label{eq:ke}
+    E_k = \frac{1}{2}mv^2
+\end{equation}
+
+where $m$ is the mass and $v$ the velocity of the object undergoing linear translation. Robot Rose's mass is $95kg$ (\cite{rose_specification}), the \gls{pi}'s mass is $45g$ (\cite{raspberry_pi_weight}) and the Sense HAT's mass is $20g$ (own measurement). That gives us $m = m_{tot} = 95.65kg$. Velocity we do not measure directly, instead we measure the acceleration using the accelerometer on the Sense HAT. To obtain velocity $\vec{v}$ from acceleration $\vec{a}$, we numerically integrate $\vec{a}$ using the following equation:
+
+\begin{equation} \label{eq:trapezoidal_rule}
+    \vec{v} = \int_{t_0}^t \vec{a}\ dt \approx \sum_{t=1}^{N} \frac{\vec{a}(t-1) + \vec{a}(t)}{2}\Delta t
+\end{equation}
+
+where $N$ is the number of samples, and $\Delta t$ is a small change in time. Equation \ref{eq:trapezoidal_rule} is called the \textit{Trapezoidal rule}. For larger $N$ and smaller $\Delta t$ the approximation becomes more accurate. We have determined an appropriate value for $N$ and $\Delta t$ such that the time taken to sample the acceleration is proportional to the recommended poll interval of the IMU as given by RTIMULib.
+\par
+Various sources report the occurrence of drift error due to sensor noise by using integration to obtain velocity from acceleration (\cite{chrobotics}) (\cite{googletechtalks}) (\cite{Woodman07anintroduction_oliver}). For the double integration that is done to obtain position the error is even worse. However, we can still use this method of determining velocity for our purposes, for the obtained velocity is accurate enough to determine kinetic energy and we discard the value of velocity after determining the kinetic energy gained from it. Every time we calculate the kinetic energy, we do so by obtaining the kinetic energy that is gained from the change in acceleration, that is to say, our error does not get increasingly worse, because we only measure changes in acceleration and do not take into account the velocity the robot may already have.
+\par
+A subtle, but important point that follows from this, is that we do not actually measure the kinetic energy of the robot, but the change in kinetic energy. Furthermore, with discarding the previous value of velocity we mean we set the initial velocity to be zero every time we want to calculate the kinetic energy. So the following equation holds:
+\\\\
+% TODO: ref recommendations
+
+\begin{equation} \label{eq:change_ke}
+    \Delta E_k = \frac{1}{2}m(\Delta v)^2 \implies \Delta E_k = \frac{1}{2}mv^2,\quad if\ \vec{v_i} = 0
+\end{equation}
+
+where $\Delta v$ is the change in velocity and $\vec{v_i}$ is the initial velocity.
+\par
+% TODO: tHardware ref correct here?
+Excessive change in kinetic energy will cause the robot to collide with a human or object, which we defined as a form of unsafe behavior. To avoid this, the obtained change in kinetic energy is compared to the maximum allowed change in kinetic energy. For our purposes, this maximum allowed change in kinetic energy is the same for every situation. The maximum allowed change in kinetic energy is given as input to the safety module either in a file or as command line argument. The value is not determined by us, but by the company or organisation who employs the safety module, who has tested and determined an appropriate value for this variable. We have chosen a value that most clearly demonstrates the use of the check on kinetic energy.
+
+\subsubsection{Rotational energy}
+\label{Rotational energy}
+The rotational energy is determined similarly to the kinetic energy, but using angular variables instead, and we calculate the actual rotational energy, not the change in rotational energy. The rotational energy is calculated using the following equation:
+
+\begin{equation}
+    %\Delta E_{rot} = \frac{1}{2}I(\Delta\omega)^2 \implies \Delta E_{rot} = \frac{1}{2}I\omega^2,\quad if\ \vec{\omega_i} = 0
+    E_{rot} = \frac{1}{2}I\omega^2
+\end{equation}
+
+where $I$ is the moment of inertia and $\omega$ is the angular velocity. For $I$ we approximate the robot as if it were a solid cylindrical object. $I$ can then be calculated as follows:
+
+\begin{equation}
+    I = \frac{1}{2}mR^2
+\end{equation}
+
+where $m$ is the mass of the robot and $R$ the radius of the robot. $R$ we approximate to be 1 meter, taking the scenario into account where Rose fully stretches her arm.
+\par
+The fused accelerometer, gyroscope and magnetometer data gives us an accurate measure of the angular displacement $\vec{\theta}$ of the safety module. With $\vec{\theta}$ we can calculate the angular velocity $\vec{\omega}$ using numerical differentiation as follows:
+
+\begin{equation}
+    \vec{\omega} = \frac{d\vec{\theta}}{dt} \approx \frac{\Delta\vec{\theta}}{\Delta t} = \frac{\vec{\theta}(t + \Delta t ) - \vec{\theta}(t)}{\Delta t}
+\end{equation}
+
+Here $\Delta t$ is a small change in time, which is, just like the $\Delta t$ used in the determinatino of the velocity in Section \ref{Kinetic energy}, proportional to the poll rate of the IMU.
+\par
+Excessive rotational energy will cause the linear momentum of the robot to be too great when it rotates, which results can result in damage to the environment or injury to humans. Therefore, just like with kinetic energy the rotational energy is compared to a maximum allowed value.
+
+\subsection{Sensors on robot Rose}
+Ultimately, Rose's arm sensors will be used to retrieve the strength and position of the arm. These values are received from \acrshort{ros}. ROS provides a publisher-subscriber type of pattern in which a subscriber can listen on a \textit{topic} on which the publisher publishes data. In our case the subscriber would be the safety module and the publisher would be Rose. Topics in ROS are just a collection of messages concerning a particular subject, where a message is the means of communication of data in \acrshort{ros} (\cite{agitr}).
+\par
+Currently we use generated values from within the safety module itself and do not communicate with robot Rose through \acrshort{ros}. We have still installed ROS on the safety module to show the feasiblity of the system as a whole. Documentation on the installation of ROS on the safety module can be found on \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our github repository}.
+\subsubsection{Force and torque}
+Strength can be expressed in two different kind of forces. One is the force of the arm against an object, the other is a rotational force, commonly called \textit{torque}, that is used to grab an object. We need not calculate the force and torque like we did with kinetic energy and rotation energy, because ultimately care robot Rose provides these values through \acrshort{ros}.
+\par
+Excessive force can cause the arm to clamp with an object, and excessive torque can cause the arm to pinch an object. Both are cases we want to avoid. We, therefore, just like with kinetic energy and rotational energy, set a maximum allowed value for the force and torque, which should not be exceeded.
+
+\subsubsection{Position}
+The last check on unsafe behavior concerns the arm position of the robot. When the robot is moving, the arm should be in a folded position. This means it is not stretched, and in a position that it can do the least amount of harm. This value, too, is ultimately provided by Rose through \acrshort{ros}, and need not be calculated by the safety module.
+
+\subsection{When the result of a check gives unsafe behavior}
+% TODO: ref to modelling section.
+What should we do when a check is executed and the maximum allowed value for the kinetic energy, rotational energy, force, torque is exceeded, or when the arm is not folded when the robot is moving? 
+These are the situations we call unsafe behavior. In such a case, the LED matrix receives a signal to turn red. On default, the LED matrix is low. When a check is executed and the result of the check is that there is no unsafe behavior, the LED matrix receives a signal to turn blue. Only when the result is that there is unsafe behavior does the LED matrix receive a signal to turn red. checks are executed in sequence. An important point to note here is that situations exist where, for example, the result of the very first check of the five checks gives unsafe behavior, while the subsequent checks give safe behavior. In such a case, the LED matrix should turn red after the first check, and stay red after the subsequent checks. This is because unsafe behavior of one aspect is not supposed to be overridden with safe behavior of another aspect. We therefore specify that once the result of a check gives unsafe behavior, the LED stays red until an acknowledge action is executed. This acknowledge action, among other actions, is elaborated in Section \ref{}.
+
+\section{Modelling the system}
+\subsection{Formal model of the behavior of the system}
+\subsection{Other models of the system}
 
 
 %
