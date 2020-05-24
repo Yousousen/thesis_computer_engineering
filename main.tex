@@ -875,7 +875,7 @@ D\\
 O\\
 In this chapter we present the results of our research. First we will present our choice of hardware and choice of operating system.
 \par
-All code and documentation can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our github repository}.
+All code, documentation and models can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}.
 %    • weergave van de resultaten
 %    • beschrijving toe te passen theorie (let op: dit betekent dat er een deelvraag is die over de theorie gaat)
 %    • bespreek de resultaten in een logische volgorde (per deelvraag)
@@ -1017,7 +1017,9 @@ Let us look at a communication scheme of the system and how the Xenomai framewor
     \label{fig:communication_scheme}
 \end{figure}
 
+\newpage
 \section{Retrieving and Using Sensor Data}
+\label{Retrieving and Using Sensor Data}
 In this section we elaborate our results on how to retrieve sensor data and use this data to check whether the safety module has performs unsafe actions.
 \par
 In Section \ref{Assignment specification} we defined unsafe behaviour as behavior that could result in injury to humans or damage to the environment by collision, clamping or pinching of the care robot with an object or human. The goal of the safety module is to provide a second layer of safety checks upon the already existing safety checks by the care robot itself. In Section \ref{Safety in care robots} we explored the how existing research measures safety in robots. We implement a rudimentary form of some of these safety checks by looking at four aspects of the care robot. These are: its kinetic energy, its rotational energy, its grip arm strength and the position of the grip arm. These aspects were given on the Risk Analysis for additional safety measures of robot Rose (\cite{risk_analysis_additional}).
@@ -1098,29 +1100,87 @@ Excessive force can cause the arm to clamp with an object, and excessive torque 
 The last check on unsafe behavior concerns the arm position of the robot. When the robot is moving, the arm should be in a folded position. This means it is not stretched, and in a position that it can do the least amount of harm. This value, too, is ultimately provided by Rose through \acrshort{ros}, and need not be calculated by the safety module.
 
 \subsection{When the result of a check gives unsafe behavior}
+\label{When the result of a check gives unsafe behavior}
 % TODO: ref to modelling section.
 What should we do when a check is executed and the maximum allowed value for the kinetic energy, rotational energy, force, torque is exceeded, or when the arm is not folded when the robot is moving? 
 These are the situations we call unsafe behavior. In such a case, the LED matrix receives a signal to turn red. On default, the LED matrix is low. When a check is executed and the result of the check is that there is no unsafe behavior, the LED matrix receives a signal to turn blue. Only when the result is that there is unsafe behavior does the LED matrix receive a signal to turn red. checks are executed in sequence. An important point to note here is that situations exist where, for example, the result of the very first check of the five checks gives unsafe behavior, while the subsequent checks give safe behavior. In such a case, the LED matrix should turn red after the first check, and stay red after the subsequent checks. This is because unsafe behavior of one aspect is not supposed to be overridden with safe behavior of another aspect. We therefore specify that once the result of a check gives unsafe behavior, the LED stays red until an acknowledge action is executed. This acknowledge action, among other actions, is elaborated in Section \ref{}.
 
+\newpage
 \section{Modelling the system}
+In this section we elaborate how we modelled the system. In Subsection \ref{Formal model of the behavior of the system} we present a formal model of the behavior of the safety module made with the modelling toolset Dezyne. In Subsection \ref{Other models of the system}, we present other models we have create to model the system. Some auxiliary models can be found in Appendix \ref{Additional Models}, and all models, in general, can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}. We avoid showing the syntax of the Dezyne language itself wherever possible, to make the results accesible to a greater public. Dezyne files can be found in the GitHub repository as well. The have the \texttt{.dzn} extension.
+
 \subsection{Formal model of the behavior of the system}
-\subsection{Other models of the system}
+\label{Formal model of the behavior of the system}
+The basics of the Dezyne toolset and modelling language were elaborated extensively in Section \ref{The Dezyne toolset and the Dezyne modelling language}. There we also explained what Dezyne's behavior verification does. In short, it checks the system on the occurrence of race conditions, deadlocks, livelocks, mismatches between specification and implementation and other concepts related to deterministic behavior of the system. The language also has the capability to check the system on functional behavior. That is to say, it checks whether a system, after executing a set of actions, is in the expected system state. In this section we will present our formal behavior model of the safety module. We will first present an overview of the system, which shows us all components of the system, then we will work inside out, going through the individual components of the system.
+\subsubsection{System overview}
+\label{System overview}
+Figure \ref{fig:safety_module_system_view} shows the system overview. An alternative representation of this same view is given in Appendix.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/system_view/system_view.png}
+    \caption{System view of the safety module system}
+    \label{fig:safety_module_system_view}
+\end{figure}
+
+In Figure \ref{fig:safety_module_system_view} we can see (if we squint our eyes a little) the hierarchy of all components that are implemented in Dezyne. On top there is the \texttt{Controller}. The \texttt{Controller} governs the entire system, and executes checks in sequence. These checks are checks on kinetic energy, rotational energy, force of the grip arm, torque of the grip arm and position of the grip arm, like we established in Section \ref{Retrieving sensor data from Rose}. Each check is implemented like an element in a linked list. A linked list is a data structure in which each element of the list points to the next element. So in this case, each check points to and executes the next check. This is to provide the system a level of abstraction and generality. When one wishes to add a new check to the system, one does not need to make changes to the \texttt{Controller}, and the only thing that needs to be changed is the pointer that points to the next check at the location in the list one wishes to add the new check. No changes need to be made to any other aspect of the system logic outside of the added check itself.
+\par
+Every check returns a value, \texttt{Safe} or \texttt{Unsafe}, which indicates whether the executed action of the care robot results in safe or unsafe behavior. 
+\par
+The model can be simulated, which shows a trace of a system along a certain path of actions which results in a sequence diagram, as we will see in subsequent subsections. In such a simulation we can choose whether a particular check returns safe or unsafe behavior ourselves. In the real non-simulated system, the system will return safe or unsafe behavior based on whether the retrieved value of the quantity the check examines exceeds the maximum allowed value, or, in the case of the arm position, whether the arm is or is not in folded position. 
+\par
+% Ref to SQ 4
+In Figure \ref{fig:safety_module_system_view} we can see blue squares going into and out of components. These are called \textit{ports}. In Section \ref{The Dezyne toolset and the Dezyne modelling language} we mentioned how source code can be generated from Dezyne models. Ports on the the edges of the system need to be bound in implementation code to generated source code. More specifically, the single port at the top of the system view denotes the \texttt{Controller} port that we need to bind to a function in implementation code in order to execute the dezyne system, or, in other words, the safety checks. The six ports at the bottom are ports that also need to be bound in implementation code, but these are executed by Dezyne internally, that is, we assign a function for Dezyne to execute by binding these ports. The binding of ports is elaborated from the implementation point of view in Section \ref{}.
+\par
+In Section \ref{The Dezyne toolset and the Dezyne modelling language} we mentioned how a Dezyne model consists of interfaces and components, where interfaces specify the behavior a component should conform with and which events or actions a component can execute. It should be noted that the system view of Figure \ref{fig:safety_module_system_view} only shows us the components of the system. It does not show us interfaces of components. This is because an interface is a specification and not an actual implementation (component) of an aspect of the system. Interfaces are still aspects of the system that can be verified on behavior, however, as we will see when we examine the behavior of \texttt{LEDControl}, an interface that concerns itself with turning the LED matrix blue in case of safe behavior and red in case of unsafe behavior of the care robot.
+\\\\
+The system consists of the following interfaces:
+
+\begin{itemize}
+    \item \texttt{ILEDControl}
+    \item \texttt{ISafetyCheck}
+    \item \texttt{ISensors}
+    \item \texttt{IResolver}
+    \item \texttt{IController}
+\end{itemize}
+
+We will first elaborate \texttt{ILEDControl}, \texttt{ISafetyCheck}, \texttt{ISensors} and \texttt{IResolver}. Then we will elaborate all components as they are found in Figure \ref{fig:safety_module_system_view}. \texttt{IController} we will elaborate alongside its component, \texttt{Controller}.
+
+\subsubsection{ILEDControl}
+% Note that LEDControl does not have a component in dezyne.
+\texttt{ILEDControl} is an interface that specifies the behavior of the safety module in context of controlling the LED matrix. It has no component in Dezyne. An implementation of this interface, in other words, a component, is mostly concerned with communicating with the LED matrix framebuffer. Communicating with hardware through device drivers is not a task for Dezyne, as it does not involve serious control logic, and only involves the retrieval of data through a device driver. So the component of \texttt{ILEDControl} is actually completely implemented in implementation code. As we mentioned in the previous section, there is still control logic to verify for Dezyne in the interface. In Figure \ref{fig:ILEDControl_event_table} the event table of \texttt{ILEDControl} is shown. In this table the blue rows are the events that the \texttt{ILEDControl} interface can execute. In the \textit{States} column denotes the state we are in; and behavior is different depending on which the interface is in. The second column shows guard conditions. These are conditionals that further influence what kind of behavior is allowed in a certain state. The \textit{Code} column shows the actual code that is executed, and the \textit{Next} column is the state the interface will be in after executing the code. Let us look at the first event, \texttt{initialise\_framebuffer}. This event, as the name suggests, initialises the framebuffer that is used to communicate with the LED matrix. When the system is in the \texttt{Idle} state, this event will result in a transition to the \texttt{Operating} state. If the system is already in the \texttt{Operating} state when the \texttt{initialise\_framebuffer} action is executed, then this is an illegal action, as denoted by the \texttt{illegal} keyword in the Code column. This makes sense, as we do not want to initialise an already initialised framebuffer, and once the ILEDControl is operating, the framebuffer should already be initialised. One of the key features of Dezyne is that, once we generate source code from this model, we are not allowed to execute the \texttt{initialise\_framebuffer} action in implementation code either, because in the model we specified that this should not be possible. It is these kind of checks from Dezyne that make sure the transition from model to implementation happens smoothly and without error. \par
+In contrast, the \texttt{destruct\_framebuffer} event is only allowed to be executed if the interface is in the \texttt{Operating} state. If the system is in the \texttt{Idle} state, there is nothing to destruct, for in the \texttt{Idle} we have not initialised the framebuffer.
+\\\\
+\texttt{ILEDControl} has an important task that is expressed in its guard conditions. It has the task to prevent the system from overriding a red LED with a blue LED. We mentioned this briefly in Section \ref{When the result of a check gives unsafe behavior}. Once a certain executed safety check gives as result that there is unsafe behavior, the LED will turn red. If a subsequent check then gives as result that there is safe behavior, it cannot turn the LED blue, because we do not know if the unsafe behavior has been recognized by someone or something yet. The fact that a blue LED cannot override a red LED is specified in the rows below the \texttt{light\_led\_blue} event. The system can only turn the LED blue if the system state is \texttt{Operating}, and the LED state is \texttt{Low} or \texttt{Blue}. If the LED state is \texttt{Red}, setting the LED blue is an illegal action, and thus cannot happen.
+\par
+How can one, then, ever turn the LED to blue once it has turned red? This is where the \texttt{reset\_led} event comes into play. The \texttt{reset\_led} action turns the led state to \texttt{Low}, so that the LED has the option to turn blue again.
+\par
+Building this prevention to override a red LED with a blue LED at the abstraction level of \texttt{ILEDControl} makes sure that any component that uses the \texttt{ILEDControl} interface cannot somehow define behavior that would override a red LED with a blue LED.  
 
 
-%
-%\subsection{Available hardware solutions for the main component}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControl_event_table.png}
+    \caption{The event table of \texttt{ILEDControl}}
+    \label{fig:ILEDControl_event_table}
+\end{figure}
 
+We made an alternative view that shows the events per system state, as opposed to system states per event, as in Figure \ref{fig:ILEDControl_event_table}. This alternative view is given in Appendix \ref{Additional Models}. We have made an events per state and states per events view for all interfaces and components. We show the ones here that we think convey the purpose of the interface or component the clearest. The alternative view can, in general, be found in Appendix \ref{Additional Models} if the views are not the same.
+\\\\
+We made a sequence diagram of a particular trace through the events of \texttt{ILEDControl}. This sequence diagram is shown in Figure \ref{fig:ILEDControl_seq}. The Dezyne behavior verifier goes through every possible sequence of events, as opposed to just one particular sequence as is shown in the sequence diagram, but the sequence diagram is useful as a simulation of the model and to visualise aspects of the system.
 
-%In Table \ref{hardware_table} we can see that the \gls{pi} has the largest total numbers of points for the specified criteria. We therefore choose the raspberry pi as main component for the hardware.
-%
-%The \gls{pi} and the various PIC and Texas Instruments \gls{mcuu}s we looked at do have extensive and up-to-date documentation. For this reason we cross out the Arduino Uno as an option for the hardware of the main component. Although the various \gls{mcuu}s provide a good solution and enviroment for real-time computing, they do not run a real-time operating system and thus require the programmer to create a system of his own for the scheduling of tasks, communication with peripherals. This requires extensive research in the architecture and features of the \gls{mcuu} and is therefore not a good solution in the limited time of the project. That leaves us with the \gls{pi}. The \gls{pi} is a small computer with an ARM processor and can run a variety of operating systems with support for real-time scheduling, which makes it a good choice as main component of the safety module. In Section \ref{Choice of operating system} we will choose an operating system for the \gls{pi} based on a comparison of features of the respective operating systems.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControl_seq.png}
+    \caption{Sequence diagram showing a particular trace through \texttt{ILEDControl}}
+    \label{fig:ILEDControl_seq}
+\end{figure}
 
-%\subsection{Choice of operating system}
-%\label{Choice of operating system}
-%Having decided to use the \gls{pi} for the main component of the safety module, we can look at 
-%
-%\subsection{Peripherals}
-%\label{Peripherals}
+\subsubsection{Functional behavior}
+
+\subsection{Other models of the safety module system}
+\label{Other models of the system}
+
 
 \chapter{Conclusion, Recommendations and discussion}
 \section{Conclusion}
@@ -1143,8 +1203,16 @@ These are the situations we call unsafe behavior. In such a case, the LED matrix
 
 %%% APPENDICES %%% 
 \begin{appendices}
-\chapter{Additional Figures}
-\chapter{<Appendix B>}
+\chapter{Additional Models}
+\label{Additional Models}
+This Appendix gives additional models as mentioned in Section \ref{Modelling and Dezyne} of the Results.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/system_view/system_view_alt.png}
+    \caption{Alternative representation of the system view given in Section \ref{System overview}.}
+    \label{fig:system_view_alt}
+\end{figure}
+\chapter{Repositor}
 \chapter{Documentation}
 \end{appendices}
 
