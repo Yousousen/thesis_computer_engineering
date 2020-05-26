@@ -22,6 +22,7 @@
 \usepackage[table]{xcolor}
 \usepackage{makecell}
 \usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
 
 % https://latexcolor.com/
 \definecolor{flavescent}{rgb}{0.97, 0.91, 0.56}
@@ -124,6 +125,39 @@
 
 \lstset{escapechar=@,style=customc}
 
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+            
+        \LARGE
+        \textbf{Design and Implementation of a Real-time Safety Module for Care Robots}
+            
+        \vspace{0.5cm}
+        %\LARGE
+        %Thesis Subtitle
+            
+        \vspace{1.5cm}
+            
+        Kaydo Alders
+            
+        \vfill
+            
+        A thesis presented for the Bachelor degree in Computer Engineering
+            
+        \vspace{0.8cm}
+            
+        \includegraphics[width=0.8\textwidth]{Figures/results/modelling_figures/IController/IController_state_chart.png}
+        
+        \vspace{0.8cm}
+        
+        \Large
+        Computer Engineering\\
+        Inholland University of Applied Sciences\\
+        Alkmaar, Netherlands\\
+        \today
+            
+    \end{center}
+\end{titlepage}
 
 \begin{titlepage}
 
@@ -137,7 +171,7 @@
 %----------------------------------------------------------------------------------------
 
 \textsc{\Large Inholland University of Applied Science}\\[1.5cm] % Name of your university/college
-\textsc{Bachelor Thesis in Computer Engineering}\\[0.5cm] % Major heading such as course name
+\textsc{Bachelor Thesis Computer Engineering}\\[0.5cm] % Major heading such as course name
 %\textsc{\large Minor Heading}\\[0.5cm] % Minor heading such as course title
 
 %----------------------------------------------------------------------------------------
@@ -188,11 +222,23 @@ Elmer Hoeksema \\ % Supervisor's Name
 %----------------------------------------------------------------------------------------
 
 % TODO: Add Verum et al. 
-\Large Research group robotics
+\Large Research group Robotics,\\ Bergerweg 200, 1817 MN Alkmaar\\
++31 (0)72-5195774
 
-\begin{center}
-    \includegraphics[width=0.5\textwidth]{Figures/inholland.jpg}
-\end{center}
+%\begin{center}
+%    \includegraphics[width=0.5\textwidth]{Figures/inholland.jpg}
+%\end{center}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{Figures/inholland.jpg}  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{Figures/verum_logo.png}
+  \end{minipage}
+\end{figure}
+
 
 \vfill % Fill the rest of the page with whitespace
 \end{titlepage}
@@ -205,11 +251,6 @@ Elmer Hoeksema \\ % Supervisor's Name
 %    • niet verplicht
 %    • Op de omslag staat alleen de titel, de naam van het bedrijf waar het onderzoek is uitgevoerd en de auteur (= naam van de student). De volledige gegevens staan op het titelblad.
 %Titelblad
-%
-%
-%
-%
-%
 %
 %
 %Eerste blad na titelblad
@@ -242,6 +283,25 @@ Elmer Hoeksema \\ % Supervisor's Name
 %    • kort en bondig
 %    • is zelfstandig te lezen
 %%%
+
+\newpage
+\mbox{}
+\vfill
+\section*{Plagiarism statement}
+Hereby I certify that this research is own written work, except for references to prior research by others which are properly cited. Any use of figures not made by myself I have been granted to use by their authors. These are properly referenced as well.\\\\
+Kaydo Alders\\
+\today
+
+\section*{Source code availability and documentation}
+The source code for this research is available under the GPLv3 license. The source code and documentation are can be found at the following URL: \href{https://github.com/Yousousen/safety-module-for-care-robot-rose}{https://github.com/Yousousen/safety-module-for-care-robot-rose}
+
+\section*{Contact information of the author}
+Name: Kaydo Alders\\
+Student number: 580539\\
+Email address: kaydo1@live.nl\\
+Telephone: +31 6 34712780\\
+
+\newpage
 \chapter*{Abstract}
 %\chapter*{Acknowledgements}
 % TODO: Summary?
@@ -251,14 +311,11 @@ Elmer Hoeksema \\ % Supervisor's Name
 
 \chapter{Introduction}
 \label{Introduction}
-Research group Robotics at Inholland Alkmaar conducted the assignment to improve the safety of care robots, as in the current state of affairs the care robots cannot guarantee safety. When a component of the care robot fails, like the grip arm, motion sensor or navigational equipment it can result in major consequences like damage to the robot's environment or injury of patients. Without guarantees that these consequences will not take place Rose cannot be used in practice. Research group Robotics therefore wants to develop a safety module that can be attached to a care robot and will operate as fail operational system to prevent major consequences like damage to the care robots environment or patient injury. The safety module will constantly check if the behavior of the of the care robot is safe given the situation. The safety module is a safety critical real-time system, as its actions are required to be completed in a given time for there not to be any bad consequences and to provide an extra layer of safety over any existing safety measures.
+Research group Robotics at Inholland Alkmaar conducted the assignment to improve the safety of care robots, as in the current state of affairs the care robots cannot guarantee safety. When a component of the care robot fails, like the grip arm, motion sensor or navigational equipment it can result in major consequences like damage to the robot's environment or injury of patients. Without guarantees that these consequences will not take place the care robot cannot be used in practice. Research group Robotics therefore wants to develop a safety module that can be attached to a care robot and will operate as fail operational system to prevent major consequences like damage to the care robots environment or patient injury. The safety module will constantly check if the behavior of the care robot is safe given the situation. The safety module is a safety critical real-time system, as its actions are required to be completed in a given time for there not to be any bad calamities and to provide an extra layer of safety over any existing safety measures.
 
 % Perhaps add some figures from care robot rose here.
 \chapter{Assignment Specification}
-TODO\\
-O\\
-D\\
-O\\
+TODO: intro\\
 
 \section{Goal of the assignment}
 \label{Goal of the assignment}
@@ -273,18 +330,20 @@ The task for the computer engineering student will be to design and implement a 
 
 In this section an in depth elaboration of the assignment is given.
 \par
-The assignment is to design and implement a prototype of a safety module for care robots. The prototype of the safety module will be implemented and tested on the semi-autonomous care robot Rose. Later models of the safety module will also have to work on different care robots, semi- and fully autonomous alike. Testing on different care robots is out of the scope for this assignment, however. The exact scope of the assignment is given in Section \ref{Scope of the assignment}. The safety module should detect situations where robot Rose could behave in an unsafe manner. For this assignment unsafe behavior is given the following definition:
+The assignment is to design and implement a prototype of a safety module for care robots. The prototype of the safety module will be focused for operation on the semi-autonomous care robot \textit{Rose}. Later models of the safety module will also have to work on different care robots, semi- and fully autonomous alike. The testing off the safety module on care robots is out of the scope for this assignment, however.
+\par
+The safety module should detect situations where robot Rose could behave in an unsafe manner. For this assignment unsafe behavior is given the following definition:
 \begin{flushleft}
 \textit{
 Unsafe behavior is behavior that could result in injury to humans or damage to the environment by collision, clamping or pinching of the care robot with an object or human.
 }
 \end{flushleft}
-The head, body and platform can collide or clamp with an object. Pinching of an object can be caused by the grip arm's gripping force or torque.  In this section, we will further elaborate how we can design and implement a prototype of the safety module. \\
+The head, body and platform can collide or clamp with an object. Pinching of an object can be caused by the grip arm's gripping force or torque. % In this section, we will further elaborate how we can design and implement a prototype of the safety module. \\
  
  %%% This is problem analysis
 % From this it follows that we will look at the kinetic energy of the platform, body and head to determine its impact energy if the robot were to collide with an object. Collision as a result from Rose making a turn will be taken into account by looking at the rotational energy. Pinching can be prevented by limiting Rose her grip arm strength.
  
-It should be noted that Rose already has safety measures built into her system. For example, collision with a person and electric shock due to spilling of water are prevented by using the navigation path planning and making the external housing of electrical parts water resistant. The latter is a mechanical safety measure. The former is a software safety measure, but it is not a real-time safety measure due to the fact that Rose uses \acrshort{ros}. In cases such as the former the goal of the safety module is to provide a second-layer real-time safety check that operates independently from Rose to provide extra safety measures. The keyword real-time is important here, as this really is the added benefit over the regular safety measures. Throughout the report, we use the following definition of real-time: 
+It should be noted that Rose already has safety measures built into her system. For example, collision with a person and electric shock due to spilling of water are prevented by using navigation path planning and making the external housing of electrical parts water resistant (\cite{risk_analysis}). The latter is a mechanical safety measure. The former is a software safety measure, but it is not a real-time safety measure due to the fact that Rose uses \acrshort{ros}. In cases such as the former the goal of the safety module is to provide a second-layer real-time safety check that operates independently from Rose to provide extra safety measures. The keyword real-time is important here, as this really is the added benefit over the regular safety measures. Throughout the research, we use the following definition of real-time: 
 
 \begin{flushleft}
 \textit{
@@ -292,11 +351,11 @@ A real-time system is a system that must react to stimuli from a controlled obje
 }
 \end{flushleft}
 
-Thus a real-time system is given limited time to react to a given stimuli. In context of the safety module the stimuli would be, for example, the acceleration sensor on Rose detecting a large increase in velocity. In such a case the safety module would create a real-time task to signal this large increase as unsafe behaviour to its environment. The time before which the safety module must have completed the task of signalling the environment task is called the \textit{deadline} of the task. (\cite{realtime_systems}). In real-time systems often the distinction is made between hard, firm and soft real-time tasks. \cite{buttazo} gives the following definitions for these: A real-time task is said to be hard if producing the results after its deadline
+Thus a real-time system is given limited time to react to a given stimuli. In context of the safety module the stimuli would be, for example, the acceleration sensor on Rose detecting a large increase in velocity. In such a case the safety module would launch a real-time task to signal this large increase as unsafe behaviour to its environment. The time before which the safety module must have completed the task of signalling the environment is called the \textit{deadline} of the task. (\cite{realtime_systems}). In real-time systems often the distinction is made between hard, firm and soft real-time tasks. \cite{buttazo} gives the following definitions for these: A real-time task is said to be hard if producing the results after its deadline
 may cause catastrophic consequences on the system under control, it is said to be firm if producing the results after its deadline is useless for the system, but does not cause any damage and it said to be soft if producing the results after its deadline has still some utility for the system, although causing a performance degradation.
 \par
 % TODO: replace later 
-From our earlier given definition of the unsafe behavior the safety module has to detect, namely that it should detect unsafe behavior that could result in injury to humans, it seems quite unethical to give the real-time safety module any other designation then hard real-time, as injury to patients is severely catastrophic. Indeed, we think the final safety module should be hard real-time. In this assignment, however, we are designing and implementing a prototype, and we will accept soft real-time behavior to be good enough for two reasons. The first reason is that the safety module will communicate with Rose to receive sensor data. Rose runs \acrfull{ros}, and since \acrlong{ros} is not real-time (\cite{why_is_ros_not_realtime}), we cannot achieve hard real-time behavior, as too much latency will occur by reading sensor data from Rose. This is a bottleneck, and a large part of the research is designated to accommodating for inherently non-real-time aspects of the robot-and-safety-module system like this. The second reason is that we will develop a prototype and that the development time is too small to investigate and realise the requirements for hard real-time systems.
+From our earlier given definition of the unsafe behavior that the the safety module should detect, namely that it should detect unsafe behavior that could result in injury to humans, it seems quite unethical to give the real-time safety module any other designation then hard real-time, as injury to patients is severely catastrophic. Indeed, we think the final safety module should be hard real-time. In this assignment, however, we are designing and implementing a prototype, and we will accept soft real-time behavior to be good enough for two reasons. The first reason is that the safety module will communicate with Rose to receive sensor data. Rose runs \acrfull{ros}, and since \acrlong{ros} is not real-time (\cite{why_is_ros_not_realtime}), we cannot achieve hard real-time behavior, as too much latency will occur by reading sensor data from Rose. This is a bottleneck, and a large part of the research is designated to accommodating for inherently non-real-time aspects of the robot-and-safety-module system like this. The second reason is that we will develop a prototype and that the development time is too small to investigate and realise the requirements for hard real-time systems.
 
 \section{Deliverables}
 \label{Deliverables}
@@ -359,7 +418,7 @@ TODO: Intro
 \label{Hardware setup}
 %In this subquestion we will look at the hardware setup and see if the safety module can be implemented in such a way that the safety module could be attached to different care robots with little configuration. Further discussion on this can be found in Section \ref{}.
 
-A Hardware setup that can handle the real-time constraints is required for the assignment. With real-time constraints we mean restrictions on the timing of tasks such that they meet their deadline. (\cite{real-time_constraints}). Although the prototype safety module will only be tested on the care robot Rose, eventually the safety module has to work on a variety of care robots. The hardware should therefore be extensible so that it can work with different care robots as well.
+A Hardware setup that can handle the real-time constraints is required for the assignment. With real-time constraints we mean restrictions on the timing of tasks such that they meet their deadline (\cite{real-time_constraints}). Although the prototype safety module will be designed and implemented for care robot Rose, eventually the safety module has to work with a variety of care robots. The hardware should therefore be extensible so that it can work with different care robots as well.
 \par
 The following are all the requirements for the hardware platform as they are relevant to our research:
 
@@ -375,51 +434,35 @@ The following are all the requirements for the hardware platform as they are rel
 
 Item \ref{hsOne} specifies that the hardware should support an environment with real-time constraints. In Section \ref{Assignment specification} we elaborate why this is required for the safety module.
 \par
-Item \ref{hsTwo} specifies that the hardware is required to communicate with care robot systems that run \acrlong{ros} to receive sensor data from. Robot Rose runs ROS, and many other care robots and mobile servant robots do too ((\cite{human-robot}), (\cite{spencer}), (\cite{delgado}), (\cite{dimitris}) to name a few), so if the safety module is extended to other care robots in the future it is very useful to support \acrshort{ros} well. 
+Item \ref{hsTwo} specifies that the hardware is required to communicate with care robot systems that run \acrlong{ros} to receive sensor data from. Robot Rose runs ROS, and many other care robots and mobile servant robots do too ((\cite{human-robot}), (\cite{spencer}), (\cite{delgado}), (\cite{dimitris}) to name a few), so if the safety module is extended to work with other care robots in the future it is very useful to support interaction with \acrshort{ros}. 
 \par
-Item \ref{hsThree} specifies that the hardware should support a connection over WiFi to communicate with the operator of Rose. This is because Rose is a semi-autonomous care robot robot and receives navigation input from her operator over a WiFi network. In Item \ref{hsFour} the requirement of a 4G network module is listed. This 4G module serves as backup module for when then WiFi connection is very weak or lost. Research into an appropriate 4G module is out of the scope of this assignment and will be done in a later version of the safety module.
-Item \ref{hsFive} lists the requirement that the safety module should support the addition of sensors with which it can independently from the care robot sense the environment. This should be at least an accelerometer to measure acceleration with, a gyroscope to measure angular velocity with, and a camera that allows the safety module to look around. These are required for two reasons. The first reason is to have independent sensors on the safety module so that the safety module does not depend on the correct operation of the sensors of the care robot, and the second reason is that there may be a lot of latency in receiving sensor data as it received from \acrshort{ros}. The camera need not be used in this assignment, but the safety module should support the addition of a camera for future versions. 
-Item \ref{hsSix} refers to the fact that the safety module should be portable, that is, it easy to attach to a care robot. It should not have an impact on the performance of the care robot. This means it should be light (relative to the care robot) and should not have large components sticking out (also relative to the rest of the care robot).
+Item \ref{hsThree} specifies that the hardware should support a connection over WiFi to communicate with the operator of Rose. This is because Rose is a semi-autonomous care robot robot and receives navigation input from her operator over a WiFi network connection. In Item \ref{hsFour} the requirement of a 4G network module is listed. This 4G module serves as backup module for when the WiFi connection is very weak or completely gone. Research into an appropriate 4G module is out of the scope of this assignment and will be done in a later version of the safety module. Nonetheless, the hardware platform should support the addition of such a 4G module.
+\par
+Item \ref{hsFive} lists the requirement that the safety module should support the addition of sensors with which it can utilize independently from the care robot sense the environment. This should be at least an accelerometer to measure acceleration with, a gyroscope to measure angular velocity with, and a camera that allows the safety module to look around. These are required for two reasons. The first reason to have independent sensors on the safety module is so that the safety module does not depend on the correct operation of the sensors of the care robot, and the second reason is that there may be a lot of latency in receiving sensor data as it received from \acrshort{ros}. The camera need not be used in this assignment, but the safety module should support the addition of a camera for future versions. 
+Item \ref{hsSix} refers to the fact that the safety module should be portable, that is, it should be easy to attach to a care robot. It should not have an impact on the performance of the care robot. This means it should be light (relative to the care robot) and should not have large components sticking out (also relative to the care robot).
+\par
 Lastly Item \ref{hsSeven} specifies the maximum costs of the safety module.
-
-
-is assignment, however, we are designing and implementing a prototype, and we will accept soft real-time behavior to be good enough for two reasons. The first reason is that the safety module will communicate with Rose to receive sensor data. Rose runs \acrfull{ros}, and since \acrlong{ros} is not real-time (\cite{why_is_ros_not_realtime}), we cannot achieve hard real-time behavior, as too much latency will occur by reading sensor data from Rose. This is a bottleneck, and a large part of the research is designated to accommodating for inherently non-real-time aspects of the robot-and-safety-module system like this. The second reason is that we will develop a prototype and that the development time is too small to investigate and realise the requirements for hard real-time systems.
-\\
+\par
 Section \ref{tHardware} shows the literature review we did to see what others have used as hardware setup for their robots.
 
 
 
 \section{Operating system of the safety module}
-As a hardware setup to handle the real-time constraints of the safety module is required, likewise a software setup that can handle the real-time constraints is required. This mainly concerns the operating system the safety module will run on. Research will be conducted to use an operating system on the safety module that can handle these constraints. In Section \ref{tOS} we elaborate the literature review we did on various qualifying operating systems.
+As a hardware setup to handle the real-time constraints of the safety module is required, likewise a software setup that can handle the real-time constraints is required. This mainly concerns the operating system the safety module will run on. Research will be conducted into operating systems for the safety module that can handle these constraints. In Section \ref{tOS} we elaborate the literature review we did on various qualifying operating systems.
 
 
 \section{Retrieving sensor data from Rose}
 \label{Retrieving sensor data from Rose}
-Rose runs a Linux distribution with Robot Operating System (ROS) as middleware. To retrieve data from Rose her sensors we have to look into the available means of communication with this system. ROS is not real-time (\cite{why_is_ros_not_realtime}), therefore it is important to research the impact this has on the safety module and whether communication over the available interfaces is fast enough for a system with real-time constraints. It could be that the available interface is too slow for real-time communication. Such a case is a risk and will be elaborated in Section \ref{Risks and solutions}. The obtained sensor data will be compared with a set of \textit{limit} values in a control loop.
-
-%These limit values are obtained by means of an external plugin that specify limitations actions the care robot is allowed to take in a given situation. The use of an external plugin will be further explained in Section \ref{Definition of unsafe behavior as a external plugin}.
-
-%\subsection{Definition of unsafe behavior as an external plugin}
-%\label{Definition of unsafe behavior as a external plugin}
-%% Describe how the safety will be imported as a plug in.
-%As described in Section \ref{Principal research question and research subquestions} the definition of unsafe behavior for a care robot will be obtained externally. This is because definitions for safe and unsafe behavior are situation dependent and differ per care robot. Although the initial implementation of the safety module will be tested on the care robot Rose, the safety module will have to work with different care robots in the future as well. We could define unsafe behavior for the care robot Rose, but we would then also have to determine what unsafe behavior is for different care robots with different maximum speeds, different grip strength, different platforms, etc. It is for this reason that the assignment does specify to think about the definition of safe and unsafe behavior and instead specifies that the safety module should be able to integrate a definition of unsafe behavior provided by someone else. Concretely this means that someone, for example the company that produces the care robot, provides a plugin or file containing several lists of values that should specify in what circumstances the safety module should alarm. Such a list of values is a list of \textit{limit} values, specifying for example the maximum linear and rotation speed a care robot can have in a given situation, the maximum grip strength the arm is allowed to have when the care robot is near a patient or a combination of these. These are just examples, and it is the companies task to correctly define safe and unsafe behavior in a given task. The safety module will obtain this definition as a plugin and will check whether any of the unsafe situations occur in its control loop. Taking the previous example, the control loop would check whether the speed or grip strength goes over the maximum limit in a situation. And if it does, the safety module will signal this. How the safety module will signal unsafe behavior is explained in Section \ref{Signalling unsafe behavior}.
- 
-%\subsection{Signalling unsafe behavior}
-%\label{Signalling unsafe behavior}
-%For the implementation of a prototype of the safety module, which is the goal of this assignment, signalling unsafe behavior will be kept simple. The safety module will signal unsafe behavior by blinking a LED and, in the case of a semi-autonomous care robot like Rose, send a signal to the operator at distance. We will, however, think about the set of actions the safety module
+Rose runs a Linux distribution with Robot Operating System (ROS) as middleware. To retrieve data from Rose her sensors we have to look into the available means of communication with this system. ROS is not real-time (\cite{why_is_ros_not_realtime}), therefore it is important to research the impact this has on the safety module and whether communication over the available interfaces is fast enough for a system with real-time constraints. %It could be that the available interface is too slow for real-time communication. Such a case is a risk and will be elaborated in Section \ref{Risks and solutions}. The obtained sensor data will be compared with a set of \textit{limit} values in a control loop.
 
 \section{Modelling the safety module}
 \label{Modelling the safety module}
 % Describe things concerning research into toolset to use (Dezyne) to validate deadlines are met.
 % Describe further the modelling because we do not want to model the entire robot but only what is relevant for us.
 In a software model the safety module and its relation to the care robot should be modelled. It is preferable to do as much verification on the state of the safety module and its actions as possible. Such a verification encompasses going through all the states of the sytem and verifying no deadlocks and livelocks occur.
-The interactions of the safety module with the care robot needs to be modelled in such a way that the real-time constraints of the system can be tested and validated. This means that the model should be able to validate that tasks meet their deadlines.
+The interactions of the safety module with the care robot need to be modelled in such a way that the real-time constraints of the system can be tested and validated. 
 % A partner of Research Group Robotics, namely the company Verum, offers a toolset to model such a real-time system \cite{verum}. In the assignment, we will make use of this toolset.
 \par
-
- % Assignment specification?
-% In Section \ref{Relevance of the assignment} it was mentioned that the care robot is a kind of safety critical real-time system. This implies that the care robots actions have deadlines and that the safety module, being a part of the care robot, will have to take into this account these deadlines and will have deadlines of itself. It is therefore required that in the design
-
 
 \section{Principal research question and research subquestions}
 \label{Principal research question and research subquestions}
@@ -431,7 +474,7 @@ Having made our problem analysis we can setup our principal research question an
 \textit{\mq}
 \end{flushleft}
 
-To answer the principal research question four subquestions are set up. The first subquestion deals with the hardware and operating system that can be used in an implementation for the safety module of a care robot. Because the safety module is a safety critical real-time system, we need hardware and an operating system that can handle the real-time constraints of the care robot. The goal of the first subquestion is to provide an answer to this:
+To answer the principal research question four subquestions are set up. The first subquestion deals with the hardware and operating system that can be used for the implementatoin of the safety module. Because the safety module is a safety critical real-time system, we need hardware and an operating system that can handle the real-time constraints of the care robot. The goal of the first subquestion is to provide an answer to this matter:
 
 \begin{flushleft}
 1. \textit{\sqone}
@@ -443,143 +486,25 @@ To answer the principal research question four subquestions are set up. The firs
 %2. \textit{\sqfive}
 %\end{flushleft}
 
-Having determined our hardware setup and operating system, we can look at ways to communicate with care robot Rose and the sensors available on our hardware. Concretely, we will look at how sensor and actuator data can be retrieved, and how it can be used to detect unsafe situations. Therefore, the second subquestion is as follows:
+Having determined our hardware setup and operating system, we can look at ways to communicate with care robot Rose and the sensors available on our hardware. Concretely, we will look at how sensor and actuator data can be retrieved and how it can be used to detect unsafe situations. Therefore, the second subquestion is as follows:
 
 \begin{flushleft}
 2. \textit{\sqtwo}
 \end{flushleft}
 
 % TODO: real-time -/-> deadlock handling.
-After subquestion two we can start designing the safety module with a software model. In the software model we want to do as much verification on the state of the safety module and its actions as possible. Moreover, we have to take into account that the safety module will be a safety critical real-time system, as described in Section \ref{Relevance of the assignment}.
-We therefore have to concern ourselves with the real-time constraints while modelling the safety module. real-time constraints encompass matters like avoiding deadlocks and meeting deadlines of tasks. The third subquestion is as follows:
+After subquestion two we can start designing the safety module with a software model. In the software model we want to do as much verification on the state of the safety module and its actions as possible. Moreover, we have to take into account that the safety module will be a safety critical real-time system, as described in Section \ref{Assignment specification}.
+We therefore have to concern ourselves with the real-time constraints while modelling the safety module. The third subquestion, is, therefore, as follows:
 
 \begin{flushleft}
 3. \textit{\sqthree}
 \end{flushleft}
 
-The fifth and final subquestion will bring everything together into an implementation of the safety module. Here we will implement the safety module on the chosen hardware and operating system and according to the model of the previous subquestion. The last subquestion is as follows:
+The fourth and final subquestion will bring everything together into an implementation of the safety module. Here we will implement the safety module on the chosen hardware and operating system and according to the model of the previous subquestion. The last subquestion is, therefore, as follows:
 
 \begin{flushleft}
 4. \textit{\sqfour}
 \end{flushleft}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SCOPE OF THE ASSIGNMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Scope of the assignment}
-%\label{Scope of the assignment}
-%% Studenten zijn vaak geneigd om een veel te grote opdracht te accepteren. Het is zaak om bij het plan van aanpak al prioriteiten te stellen: wat ga je beslist doen, wat ga je zeker niet doen, en wat ga je doen als er nog tijd over is? Feitelijk prioriteer je de mogelijke invulling van je opdracht. Op deze wijze zorg je ervoor dat de verwachtingen bij de opdrachtgever, bij de school en bij jezelf niet te hoog gespannen zijn en je aan een realistische en bereikbare opdracht begint.
-%
-%% Ook vermeld je in dit gedeelte de randvoorwaarden die nodig zijn om je opdracht tot een succes te maken en de eisen die de opdrachtgever zelf stelt aan je opdracht. Zo maak je deze expliciet bespreekbaar voor opdrachtgever en school.
-%
-%
-%% TODO: Use moscow here!
-%% Describe how we are not concerned with what safety is, nor are we concerned with what the care robot should do in case of some detected unsafe behavior.
-%
-%In this chapter the scope of the assignment is provided. The scope is provided in the form of a \textit{moscow} list \cite{moscow}, specifying what \textit{must} be done to succeed the assignment, what \textit{should} be persued but does not decide success of the project, what \textit{could} be done if ti and what we \textit{would} like to have but will not be delivered this time. In Section \ref{MoSCoW list} the moscow list is shown.
-%
-%\subsection{Moscow list}
-%\label{MoSCoW list}
-%\begin{description}
-%\item Must
-%    \begin{itemize}
-%        \item Safety module guarantees that in software eliminateable situations of collision, clamping and pinching that could result in injury of the patient or damage to the enviroment do not take place. 
-%        \item Safety module lights a LED when Rose shows unsafe behavior.
-%        \item Safety module is able to retrieve sensor and actuator data from Rose.
-%        \item Safety module checks for unsafe behavior by comparing retrieved sensor data with data that defines unsafe behavior from a test plugin.
-%        \item The software model for the safety module verifies correct real-time behavior of the safety module.
-%        \item The actions of the safety module are soft real-time.
-%    \end{itemize}
-%\item Should
-%    \begin{itemize}
-%        \item Safety module signals the operator when Rose shows unsafe behavior.
-%        \item The actions of the safety module are hard real-time.
-%        \item Hardware setup of the safety module is generic enough to work on a variety of care robots.
-%        \item Software setup of the safety module is generic enough to work on a variety of care robots.
-%    \end{itemize}
-%\item Could
-%    \begin{itemize}
-%        \item Safety module is able to restore Rose when a component fails.
-%        \item Safety module is able to integrate unsafe behavior specified with multiple different plugins.
-%    \end{itemize}
-%\item Would
-%    \begin{itemize}
-%        \item Safety module minimises risk of damage or injury on a variety of care robots.
-%        \item Safety module is able to control Rose's or a different care robot's wheel motors to autonomously drive the robot out of an unsafe situation.
-%        \item Safety module is able to control Rose's or a different care robot's gripping arm motors to autonomously adjust force or torque in an unsafe situation.
-%    \end{itemize}
-%\end{description}
-
-
-%\subsection{Elaboration on MoSCoW list}
-%\label{Elaboration on MoSCoW list}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMPETENCES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Competences}
-%\label{Competences}
-%% In deze paragraaf beschrijf je de competenties/indicatoren waaraan je door middel van je onderzoek werkt. Denk eraan dat je hierin zowel de beroepscompetenties als de competenties professionalisering en onderzoeken (zie competentiekaart op Moodle) opneemt. In het plan van aanpak neem je in ieder geval twee beroepscompetenties op niveau 3 op. Hierbij is het van belang goed na te denken over je keuze en deze ook goed te motiveren.
-%In this section the chosen competences are elaborated. \\
-%A list of competences is published on moodle from which a selection can be chosen. The competences are given in Dutch as they are published in Dutch. The chosen competences are cited here: 
-%
-%\begin{description}
-%
-%\item \textbf{Competentie Onderzoeken}:\\
-%\textit{Niveau 3 Startbekwaam}\\
-%De student toont de competentie op dit niveau aan door kennis en vaardigheden geïntegreerd toe te passen in nieuwe of onbekende omstandigheden binnen een multidisciplinaire context die breed gerelateerd is aan het vakgebied en lost complexe vraagstukken zelfstandig en op een oorspronkelijke manier op.
-%
-%\item \textbf{Competentie Professionaliseren}:\\
-%\textit{Niveau 3 startbekwaam}\\
-%De student toont de competentie op dit niveau aan door kennis en vaardigheden geïntegreerd toe te passen in nieuwe of onbekende omstandigheden binnen een multidisciplinaire context die breed gerelateerd is aan het vakgebied en lost complexe vraagstukken zelfstandig en op een oorspronkelijke manier op.
-%De student verdiept alle bij niveau 1 en 2 genoemde indicatoren op het niveau ‘startbekwaam’ binnen de genoemde context.
-%
-%\item \textbf{Competentie Ontwerpen}:\\
-%C3.1 Opstellen van een ontwerp voor een real-time \& embedded softwaresysteem met gebruik van software-architecturen
-%
-%\item \textbf{Competentie Realisatie}:\\
-%C3.1 Bouwen, testen en beschikbaar stellen van software met behulp van een ontwikkelomgeving en daarbij gebruikmaken van bestaande software frameworks die aansluiten bij bestaande software.
-%\end{description}
-%
-%The competence \textit{onderzoeken} is relevant to conduct a proper research for this assignment. To elaborate, the relevant aspects of the care robot have to be sorted out, as conducting research in the entire workings of the care robot would take too much time. Moreover, to conduct a proper research good research question have to be set up, which is part of this competence as well.\\
-%The competence \textit{professionaleren} is about the execution of the research. This competence is relevant because it is important conduct the research in a professional way that leads to the expected result.\\
-%The design of a safety module is a central aspect of the safety module and thus the competence \textit{ontwerpen} is relevant for the assignment.\\
-%Lastly the competence \textit{realisatie} is relevant for the assignment because of the other central aspect of the research, namely, implementing the safety module.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RISKS AND SOLUTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Describe what to do if we cannot realise verification on software level.
-%\section{Risks and solutions}
-%\label{Risks and solutions}
-%% Het is goed om in het beginstadium van je onderzoek na te denken over welke risico’s er kunnen opdoemen. Daarbij gaat het natuurlijk om de risico’s die specifiek betrekking hebben op jouw onderzoek en niet zozeer om algemeen geldende risico’s. Voor deze specifieke risico’s bedenk je bovendien alvast een oplossingsrichting. Deze paragraaf zorgt er met name voor dat je tijdens de uitvoering van je onderzoek alert blijft op signalen die erop wijzen dat de door jou voorziene risico’s ook realiteit worden, zodat je al in een beginstadium actie kunt ondernemen.
-%
-%% TODO:
-%% For the risk think about the fact that it may be really hard to make the safety module work on multiple (care) robots (genericness). I also excluded it from the primarly goal described in Section 2.
-%% Risk: It could be, for example, that the communication interface with Rose is too slow for real-time communication with the safety module. In this case we would have to look for an alternative way to communicate with the sensors (if this is possible at all) or decide that the safety module 
-%
-%In this section, potential risks specific to the assignment and potential solutions for these risks are elaborated.
-%
-%\begin{description}
-%\item 1. It is possible that communication with ROS over ethernet is too slow for the real-time safety module.\\
-%    The safety module will send commands to ROS over ethernet to retrieve signal and actuator data from care robot Rose. It is possible that this communication is too slow, as the safety module has to respond promptly to stimulus from the enviroment of Rose. In such a case we would have to look for alternatives ways to receive sensor and actuator data from Rose. One such way is to connect create an interface that directly connects to Rose without the need of an middleware like ROS. This however would complicate a few things since all of the sensor data that is presented by Rose is stored in a ROS object.
-%\item 2. It is possible that the safety module is not generic enough to work with care robots beside Rose.\\
-%    ROS is not the bottleneck here since different care robots running ROS should still provide their sensor data using the same data object. However, it could be the case that the software written for the safety module interprets the data in such a way that it is dependent on what care robot it operates for. This can be avoided by taking into account from the beginning that the safety module will eventually have to work with care robots beside Rose and create the software without hardcoded values that depend on specific parts of Rose.
-%\end{description}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% APPROACH %%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Approach}
-%\label{Approach}
-%% In het hoofdstuk Aanpak beschrijf je hoe je denkt te werk te gaan met je opdracht. Hier wordt de brug geslagen tussen het afgebakende resultaat en de inrichting van het onderzoek, door middel van beantwoording van de hoe-vraag.
-%% Beschrijf waar je mee bezig bent, kijk welke relevante theorieën beschikbaar zijn en pas deze toe bij het uitvoeren van je opdracht. Met andere woorden: zoek uit wat er vanuit de theorie al bekend is over je onderwerp en koppel hieraan je uitgangspunten, onderzoeksvraag en deelvragen. Zo onderbouw je het geheel met relevante vakliteratuur.
-%
-%% Stap voor stap beschrijf je de activiteiten die je denkt te moeten uitvoeren om tot het gewenste resultaat te komen. Natuurlijk zul je dit voor de korte termijn veel gedetailleerder kunnen beschrijven dan voor de wat langere termijn. Het is dan ook niet erg dat je de wat later uit te voeren activiteiten globaler beschrijft. 
-%
-%The approach used to provide an answer to the principal research question: \textit{\mq}, will be described in this section.\\
-%First research has to be conducted into creating a hardware and software setup for the safety module. It is important that the hardware and software is able to handle the safety module's real-time constraints. Various real-time hardware options exist, a popular option is the use of microcontrollers because they do not run a operating system and thus have no overhead in scheduling user processes (\cite{realtime_scheduling}). Software will be chosen based on the hardware. A visit will be made to project partner Heemskerk Innovative Technology (\cite{hit}) to see what kind of hardware and software robot Rose already uses. This is relevant for the safety module because the hardware and software for the safety module can then also be chosen based on the existing hardware and software on the care robot.
-%\\\\
-%After choosing an appropriate hardware and software setup research can be conducted into communication from the safety module with robot Rose. From the assignment specification in Section \ref{Assignment specification} we know that Rose runs a Linux distribution with Robot Operating System (ROS) as middleware. We therefore want to look into the way ROS provides data from sensors and actuators so that it can be retrieved by the safety module. \cite{gentle} should provide use with enough information on how to interface with ROS.
-%\\\\
-%\cite{tadele} shows how previous studies implemented checks on safety for care robots. We will look into a method that is relevant to us.
-%\\\\
-%We will look into a method to model the behavior of the safety module in relation to the care robot. Project partner Verum developes a toolset for verification of program behavior, generation of models and generation of source code. A visit will be made to the company to see if the toolset can be used for the development of the safety module. If the toolset is useful, we can examine its documentation (\cite{verum}).
-%\\\\
-%The studies shown by \cite{tadele} can also be examined on how to create an implementation of the safety module from the model.
 
 %%%%%%%%%%%%%%%%%%%%%%%% Research Methodology %%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Research Methodology}
@@ -589,31 +514,33 @@ The fifth and final subquestion will bring everything together into an implement
 %    • geef aan hoe je ervoor hebt gezorgd dat de informatie betrouwbaar  en valide is.
 %    • geef aan hoe je de informatie hebt geanalyseerd.
 %\chapter{Practical and Theoretical Background}
+TODO: Intro
+
 
 \section{General methodology of the research}
-The general methodology of this research is a feasibility study; in the sense that we want to explore existing research in robotic control systems, real-time systems that deal with inherently non-real-time elements, verification of system behavior and mobile robotic safety. The goal is to apply these existing ideas to our case with care robot Rose, namely to implement a prototype safety module to show the feasibility of applying these ideas to the case of care robot Rose. Because of this broad focus we only touch the surface of the vast sea of knowledge that is contained in each of these subjects. To elaborate, in the context of real-time systems we will not aim for hard real-time performance of the safety module, despite care robot Rose being perceived as a hard real-time system, as this requires much more specialised attention to implement, which would deviate from our aim to explore a multitude of ideas. Instead, we aim for the safety module to be a soft real-time system that is able to show the feasibility of the system as a whole. In the context of robot safety, we will look at the safety criteria and safety measures in existing research, but in our case we will only use a rudimentary form of these safety measures criteria. Likewise we explore the ideas of system behavior verification in so far this gives guarantees on the correct operation of the safety module.
+The general methodology of this research is a feasibility study, in the sense that we want to explore existing research in robotic control systems, real-time systems that deal with inherently non-real-time elements, verification of system behavior and mobile robotic safety. The goal is to apply these existing ideas to our case with care robot Rose, namely to implement a prototype safety module to show the feasibility of applying these ideas to the case of care robot Rose. Because of this broad focus we only touch the surface of the vast sea of knowledge that is contained in each of these subjects. To elaborate, in the context of real-time systems we will not aim for hard real-time performance of the safety module, despite care robot Rose being perceived as a hard real-time system, as this requires much more specialised attention to implement, which would deviate from our aim to explore a multitude of ideas. Instead, we aim for the safety module to be a soft real-time system that is able to show the feasibility of the system as a whole. In the context of robot safety, we will look at the safety criteria and safety measures in existing research, but we will only apply a rudimentary form of these safety measures criteria. Likewise, we explore the ideas of system behavior verification in so far this gives guarantees on the correct operation of the safety module.
 \\\\
 % TODO: ref recommendations
-The results of this research and the prototype safety module produced by this research can be used to built further upon the ideas explored. Specifically, this research can be used to continue the development of the safety module into a product that provides an extra layer of safety to different care robots and perhaps different mobile service robots as a whole. Chapter \ref{} elaborates follow-up research options in more depth. 
+The results of this research and the prototype safety module produced by this research can be used to built further upon the ideas explored. Specifically, this research can be used to continue the development of the safety module into a product that provides an extra layer of safety to different care robots and perhaps different mobile service robots as a whole category. Chapter \ref{} elaborates follow-up research options in more depth. 
 \\\\
 To provide answers to the subquestions stated in Chapter \ref{Problem Analysis and Research Questions}, a mixture of research methods are used. These are elaborated per subquestion in Section \ref{Methodologies per subquestion}.
 
 \section{Methodologies per subquestion}
 \label{Methodologies per subquestion}
-The first subquestion stated in Chapter \ref{Problem Analysis and Research Questions} is: '\sqone'. For this subquestion we will conduct a literature review to determine what kind of hardware previous researches use in their robotic applications. Concretely, we would like to to find hardware that is both able to handle the real-time constraints of the care robot and that can interact with \acrshort{ros}. A comparative study will be conducted to determine what is the best choice for the heart of the system, the processing unit, RAM and related peripherals. From here on we will determine what measuring devices can be used with this hardware, and we will conduct another literature review and comparative study to find an appreciate real-time operating system for this hardware of the safety module. The literature review on the hardware and software can be found in Section \ref{tHardware} and Section \ref{tOS} respectively. The results of the comparative studies can be found in the results chapter in Section \ref{Main component} and Section \ref{Operating System} respectively.
+The first subquestion stated in Chapter \ref{Problem Analysis and Research Questions} is: '\sqone'. For this subquestion we will conduct a literature review to determine what kind of hardware previous researches use in their robotic applications. Concretely, we would like to to find hardware that is both able to handle the real-time constraints of the care robot and that can interact with \acrshort{ros}. A comparative study will be conducted to determine what is the best choice for the heart of the system, the processing unit, RAM and related peripherals. From here on we will determine what measuring devices can be used with this hardware, and we will conduct another literature review and comparative study to find an appreciate real-time operating system for this hardware of the safety module. The literature review on the hardware and software can be found in Section \ref{tHardware} and Section \ref{tOS} respectively. The results of the comparative studies can be found in the Results chapter in Section \ref{Main component} and Section \ref{Operating System} respectively.
 \\\\
 % TODO: ref to section containing these results.
-The second subquestion, '\sqtwo', builds upon the results of the first subquestion and uses the results of the comparative studies of the first subquestion to find out how, with the chosen hardware and software, we can interact with sensors to retrieve data and how we can use that data to detect unsafe behavior.
+The second subquestion, '\sqtwo', builds upon the results of the first subquestion and uses the results of the comparative studies of the first subquestion to find out how, with the chosen hardware and software, we can interact with sensors to retrieve data and how we can use that data to detect unsafe behavior. The answer to this subquestion is provided in Section \ref{Retrieving and Using Sensor Data} of the Results chapter.
 \\\\
 % TODO: ref to section containing these results.
-The third subquestion, '\sqthree', aims to model the behavioral aspects of the safety module. The result of this subquestion will be a formal model that can put some guarantees on the behavior of the safety module. An elaboration of the toolset that will be used to make this formal model is give in Section \ref{Modelling and Dezyne}. The results of this subquestion can be found in Section \ref{}.
+The third subquestion, '\sqthree', aims to model the behavioral aspects of the safety module. The result of this subquestion will be a formal model that can put some guarantees on the behavior of the safety module. An elaboration of the toolset that will be used to make this formal model is give in Section \ref{Modelling and Dezyne}. The results of this subquestion can be found in Section \ref{Formal model of the behavior of the system}.
 \\\\
 The fourth and last subquestion, '\sqfour' will put everything together in an implementation of the formal model on hardware and software. A simulation will be used to emulate the interaction with care robot Rose her sensors.
 
 
 \chapter{Theoretical Background and Literature Review}
 % TODO: Edit introduction when more literature review is added.
-In this chapter we provide the theoretical background and literature reviews that corroborate our research. We will first present definitions of terms that are used throughout this research. After that, we present our conducted literature reviews on the topics of hardware and operating systems of service robots.
+In this chapter we provide the theoretical background and literature reviews that corroborate our research. We will first present definitions of terms that are used throughout this research. After that, we present our conducted literature reviews on the topics of hardware and operating systems of service robots and provide an overview of the Dezyne toolset and modelling language, the toolset and modelling language used to model the behavioral aspects of the safety module.
 \label{Theoretical Background}
 %\section{Practical background}
 %     • waar speelt het onderzoek zich af (branche, bedrijf, afdeling)
@@ -623,15 +550,15 @@ In this chapter we provide the theoretical background and literature reviews tha
 %    • eventueel eerder onderzoek 
 \section{General terms and definitions}
 \label{Terms and defintions}
-Throughout the research we make use of a variety of terms and definitions. The definitions we use for \textit{real-time systems} and \textit{hard, firm and soft} real-time tasks were given in Section \ref{Assignment specification}. Likewise, the definition we use for \textit{unsafe behavior} was given in in Section \ref{Assignment specification} as well. In Section \ref{Safety in care robots} we elaborate more on the safety measures used in care robots.
+Throughout the research we make use of a variety of terms and definitions. The definitions we use for \textit{real-time systems} and \textit{hard, firm and soft} real-time tasks were given in Section \ref{Assignment specification}. Likewise, the definition we use for \textit{unsafe behavior} was given in in Section \ref{Assignment specification} as well.% In Section \ref{Safety in care robots} we elaborate more on the safety measures used in care robots.
 \\\\
-Previous research frequently uses the terms \textit{mobile service robot}, \textit{domestic robot}, personal care-robot for mobile robots used in medical (\cite{medical}) and military (\cite{military}), or for use in personal care (\cite{personal}). \citeauthor{tadele} defines a personal care-robot as a service robot with the purpose of either aiding or performing actions that contribute toward the improvement of the quality of life an individual. \citeauthor{tadele} defines a domestic care robot as a personal-care robot with or without manipulators that operate in home environments and is often mobile. When we refer to \textit{care robots} in our research, we refer to the definition of a domestic care robot as given by \citeauthor{tadele}. We sometimes refer to service robot as well, if that is the specific term used by in research we refer to.
+Previous research frequently uses the terms \textit{mobile service robot}, \textit{domestic robot} or \textit{personal care-robot} for mobile robots used for medical (\cite{medical}) and military (\cite{military}) purposes, or for use in personal care (\cite{personal}). \citeauthor{tadele} defines a personal care-robot as a service robot with the purpose of either aiding or performing actions that contribute toward the improvement of the quality of life of an individual. \cite{tadele} defines a domestic care robot as a personal-care robot with or without manipulators that operate in home environments and is often mobile. When we refer to \textit{care robots} in our research, we refer to the definition of a domestic care robot as given by \citeauthor{tadele}. We sometimes refer to service robot as well, if that is the specific term used by the research we refer to.
 \\\\
-Multiple times in this research we refer to the concepts of \textit{processes} and \textit{threads}. A process is a sequence of execution in a computer, it is a program in execution. A process has its own address space and system resources (\cite{process_threads}). A thread is also a sequence of execution, but a thread can be seen as a subset of a process. A process can create multiple threads and each threads shares their address space and system resources with each other. (\cite{process_threads}). We sometimes use the term \textit{task} as a synonym for thread in this research.
+Multiple times in this research we refer to the concepts of \textit{processes} and \textit{threads}. A process is a sequence of execution in a computer, it is a program in execution. A process has its own address space and system resources (\cite{process_threads}). A thread is also a sequence of execution, but a thread can be seen as a subset of a process. A process can create multiple threads and each thread shares their address space and system resources with other threads (\cite{process_threads}). We sometimes use the term \textit{task} as a synonym for \textit{thread} in this research.
 \par
 Two concepts related to processes and threads are the concepts of \textit{deadlock} and \textit{livelock}. Deadlock occurs in a system when all its constituent processes are blocked. Another way of saying this is that the system is deadlocked because there are no eligible actions that it can perform (\cite{ltsa}). One example of a deadlock in a system is a system in which two threads each hold a resource that the others requires to continue execution. Livelock occurs in a system where a thread's further execution requires the action of another executing thread, but the other thread is constantly served more work to do without executing the required action, meaning the first thread cannot continue to execute (\cite{livelock_starvation}).
 \par
-Two other concepts related to the execution of threads are the concepts of \textit{starvation} and \textit{race-conditions}. Starvation describes a situation where a thread is unable to gain regular access to shared resources and is unable to make progress (\cite{livelock_starvation}). A race condition occurs when two threads access a shared variable at the same time (\cite{race_condition}). Race conditions can be prevented by use of mutexes or semaphores. A mutex is a lockable object that is designed to signal when critical sections of code need exclusive access, preventing other threads with the same protection from executing concurrently and access the same memory locations \cite{mutex}. Such a critical section can be a shared variable as with a race condition. A semaphore object is a synchronization object that maintains a count between zero and a specified maximum value (\cite{semaphore}). Both mutexes and semaphores can be used to prevent race conditions.
+Two other concepts related to the execution of threads are the concepts of \textit{starvation} and \textit{race-conditions}. Starvation describes a situation where a thread is unable to gain regular access to shared resources and is unable to make progress (\cite{livelock_starvation}). A race condition occurs when two threads access a shared variable at the same time (\cite{race_condition}). Race conditions can be prevented by use of mutexes or semaphores. A mutex is a lockable object that is designed to signal when critical sections of code need exclusive access, preventing other threads with the same protection from executing concurrently and access the same memory locations (\cite{mutex}). Such a critical section can be a shared variable as with a race condition. A semaphore object is a synchronization object that maintains a count between zero and a specified maximum value (\cite{semaphore}). Both mutexes and semaphores can be used to prevent race conditions.
 \\\\
 Definitions and meanings for terms and acronyms like, \textit{\acrshort{ros}}, \textit{\acrshort{mcu}} and \textit{\acrshort{pi}} are given in our Glossary and Acronyms lists which can be accessed by clicking on the respective term or acronym.
 \par
@@ -649,16 +576,16 @@ Care robot Rose uses \acrfull{ros} as its middleware. The definition of \acrfull
  \label{Safety in care robots}
 There are three widely used measures for safety in care robots. These are: acceleration-based criteria,  force-based criteria and energy/power-based criteria. Other criteria include human pain tolerance, maximum stress and energy density (\cite{tadele}). Of the acceleration-based criteria, the head injury criteria (HIC) is most widely used. It is a measure of the head acceleration for an impact that lasts for a certain duration (\cite{hic}). Force-based criteria consider excessive force as the possible cause of collision injury (\cite{force}). Lastly energy/power based criteria is a criteria that considers the rate of transfer of kinetic energy on body impact as the cause of possible injury to a human (\cite{crucial_milestone}).
 \par
-The prototype safety module will use a very rudimentary form of force-based and energy-based safety criteria. It will calculate the kinetic energy of the body of the care robot and force used by the grip arm of the care robot and will use this as the basis to determine what is unsafe behavior. The reason we only use this rudimentary form is because research into the topics of the various safety criteria is not the focus of this research. Instead, the focus of this research is to provide second-layer real-time safety checks on care robot Rose, that are not dependent on the state of Rose her own system. We describe the goal and specification of the assignment more in depth in Section \ref{Goal of the assignment} and Section \ref{Assignment specification} respectively.
+The prototype safety module will use a very rudimentary form of force-based and energy-based safety criteria. It will calculate the kinetic energy of the body of the care robot and force used by the grip arm of the care robot and will use this as the basis to determine what is unsafe behavior. The reason we only use this rudimentary form is because research into the topics of the various safety criteria is not the focus of this research. Instead, the focus of this research is to provide second-layer real-time safety checks on care robot Rose, that is not dependent on the state of Rose her own system. We describe the goal and specification of the assignment in more depth in Section \ref{Goal of the assignment} and Section \ref{Assignment specification} respectively.
  
 
 \section{Hardware in service robots}
 \label{tHardware}
-Previous research has used a variety of hardware for their real-time mobile service robot applications. \citeauthor{delgado} used a Raspberry Pi 3 as their control architecture for its open source enviroment They mention its advantages over (also open-source) embedded hardware. Developing a real-time enviroment on embedded hardware is complex due to its limited availability of systematic documentation and technical support. Although manufacturers often provide linux kernel sources, many times the system lacks compatibility with other software, which is an open problem in embedded development in general. \citeauthor{delgado} further notes that the \gls{pi} 3 offers great compatibility with \acrfull{ros}, as \acrshort{ros} offers pre-built binaries for Ubuntu systems, and the \gls{pi} 3 is able to run Ubuntu. \acrshort{ros} supports Raspbian, the native operating system of the \gls{pi} as well, but there are no pre-built  binaries for this system, which increases development time.
+Previous research has used a variety of hardware for their real-time mobile service robot applications. \citeauthor{delgado} used a Raspberry Pi 3 as their control architecture for its open source enviroment They mention its advantages over (also open-source) embedded hardware. Developing a real-time enviroment on embedded hardware is complex due to its limited availability of systematic documentation and technical support. Although manufacturers often provide linux kernel sources, many times the system lacks compatibility with other software, which is an open problem in embedded development in general. \citeauthor{delgado} further notes that the \gls{pi} 3 offers great compatibility with \acrfull{ros}, as \acrshort{ros} offers pre-built binaries for Ubuntu systems, and the \gls{pi} 3 is able to run Ubuntu. \acrshort{ros} supports Raspbian, the native operating system of the \gls{pi}, as well, but there are no pre-built  binaries for this operating system, which increases development time.
 \par
-\citeauthor{bouchier} researched into ways to integrate \acrshort{ros} into a robot. His research applied to a broader field of robots than only care robots, but his research is relevant nonetheless. He mentions three architecture styles, namely embedding \acrshort{ros} on an integrated personal computer, the use of a proprietary embedded system with custom interface and the extension of \acrshort{ros} messaging and APIs. The embedded PC architecture style allows for full integration of \acrshort{ros} on a Linux distribution with the ability to run others \acrshort{ros} nodes besides the robot system as well. Still, default Linux is not real-time, and requires patches and frameworks like Xenomai to achieve soft or firm real-time performance. For the second option, the use of a custom proprietary embedded system, \citeauthor{bouchier} describes a ROS device node can be setup to allow translation between ROS nodes and the propriety embedded interface. A recent development of the time has setup such an architecture on an Arduino (\cite{bouchier}). \citeauthor{arduino} also use an Arduino board in their wireless sensor network control system for environmental sensing of temperature and humidity. The third architecture  option describes communication with ROS nodes by use of Remote Procedure Calls (RPC). Rosserial is an approach that can be used to relay messages between ROS nodes to a embeddded system. Rosserial offers support for any platform that supports the C++ programming language.
+\citeauthor{bouchier} researched into ways to integrate \acrshort{ros} into a robot. Their research applied to a broader field of robots than just care robots, but their research is relevant nonetheless. They mention three architecture styles, namely embedding \acrshort{ros} on an integrated personal computer, the use of a proprietary embedded system with custom interface and the extension of \acrshort{ros} messaging and APIs. The embedded PC architecture style allows for full integration of \acrshort{ros} on a Linux distribution with the ability to run others \acrshort{ros} nodes besides the robot system as well. Still, default Linux is not real-time, and requires patches and frameworks like Xenomai to achieve soft or firm real-time performance. For the second option, the use of a custom proprietary embedded system, \citeauthor{bouchier} describes a ROS device node can be setup to allow translation between ROS nodes and the propriety embedded interface. A recent development of the time had setup such an architecture on an Arduino (\cite{bouchier}). \citeauthor{arduino} also use an Arduino board in their wireless sensor network control system for environmental sensing of temperature and humidity. The third architecture  option describes communication with ROS nodes by use of Remote Procedure Calls (RPC). Rosserial is an approach that can be used to relay messages between ROS nodes to a embeddded system. Rosserial offers support for any platform that supports the C++ programming language.
 \par
-The architecture styles that \citeauthor{bouchier} describes are focused on the control system of a robot itself. In our case, the safety module is an addition to the already existing care robot system. The system of robot Rose most closely resembled the first architecture \citeauthor{bouchier} describes, but without real-time patches or a real-time framework installed. \citeauthor{bouchier}'s research is relevant nonetheless to see what kind of architecture options exist.
+The architecture styles that \citeauthor{bouchier} describes are focused on the control system of a robot itself. In our case, the safety module is an addition to the already existing care robot system. The system of robot Rose most closely resembled the first architecture \citeauthor{bouchier} describes, but without real-time patches or a real-time framework installed. %\citeauthor{bouchier}'s research is relevant nonetheless to see what kind of architecture options exist.
 \par
 Another architecture not described by \citeauthor{bouchier} but which can be found in, for example, (\cite{spencer}) is the use of a base CPU in the robot itself, which communicates with another PC to receive input to determine which actions to take. \citeauthor{spencer} used this in a service robot that guides and informs passengers in airports. Robot Rose has a similar architecture in that she receives navigational commands from the operator connected to her via a laptop on the WiFi network. 
 \par
@@ -683,7 +610,7 @@ Xenomai imitates various other real-time operating systems by providing interfac
 % TODO: Gloss dezyne
 % TODO: Gloss mCRL2
 % TODO: ref dezyne results
-In this section we present a short overview of the Dezyne toolset that is used in this research to model behavior of the safety module. We think it is important to show a simple example, one that is less complex than the safety module which is shown in Chapter \ref{}, to get across the effectiveness of the toolset and its relevance to our research. The Dezyne toolset is developed by Verum (\cite{verum}), a partner company of this research. Dezyne allows us to verify the behavior of the safety module, by tracing every possible execution sequence and stopping at a problem. Dezyne's verification checks the system on the occurrences of race conditions, deadlocks, livelocks, mismatches between specification and implementation and other concepts related to deterministic behavior of a program. Dezyne has the ability to generate source code from the model specification, which makes sure that the source code is free from these problems (\cite{dzntut}).
+In this section we present a short overview of the Dezyne toolset that is used in this research to model behavior of the safety module. We think it is important to show a simple example, one that is less complex than the safety module which is shown in Section \ref{Formal model of the behavior of the system} of the Results chapter, to get across the effectiveness of the toolset and its relevance to our research. The Dezyne toolset is developed by Verum (\cite{verum}), a partner company of this research. Dezyne allows us to verify the behavior of the safety module, by tracing every possible execution sequence and stopping at a problem. Dezyne's verification checks the system on the occurrences of race conditions, deadlocks, livelocks, mismatches between specification and implementation and other concepts related to deterministic behavior of a program. Dezyne has the ability to generate source code from the model specification, which makes sure that the source code is free from these problems (\cite{dzntut}).
 To provide this verification Dezyne internally makes use of the process algebraic language \textit{mCRL2}, a formalism for behavioral specification and verification of concurrent and distributed systems. mCRL2 extends the algebra of communicating processes with various features including notions of data, time, and multi-actions (\cite{mcrl2}).
 
 \subsection{Process algebras and Dezyne}
@@ -781,10 +708,9 @@ The reason we get the error shown in Figure \ref{Component verification error: g
 \par
 The takeaway from this example is that a component must always conform to what is specified in its provided interface.
 \\\\
-% TODO: Add ref
-Lastly, let us look at a sequence diagram for the correctly verified model of Figure \ref{fig:theoretical_background_dezyne_model}. The sequence diagram is shown in Figure \ref{Sequence diagram of the LED component}. This is also called a simulation in Dezyne, because we simulate the system's control logic, taking a particular walk through the available actions. At the bottom of the figure we can see the particular actions we can execute, that is, events that can fire in this system's state, and on the right we see a watch window that shows values of the variables of the interface and the component. Since this example consists of just a \texttt{LED} component and its interface, the sequence diagram does not give us much information that we could not already deduce from the state diagram in Figure \ref{fig:led_example_graph}. However, for more complex systems like our safety module given in \ref{}, the sequence diagrams will prove to be a very useful visualisation of the system.
+Lastly, let us look at a sequence diagram for the correctly verified model of Figure \ref{fig:theoretical_background_dezyne_model}. The sequence diagram is shown in Figure \ref{Sequence diagram of the LED component}. This is also called a simulation in Dezyne, because we simulate the system's control logic, taking a particular walk through the available actions. In this research, when we refer to a component's actions, we mean the same thing as the events we have declared for it. At the bottom of the Figure \ref{Sequence diagram of the LED component} we can see the particular actions we can execute, that is, events that can fire in this system's state, and on the right we see a watch window that shows values of the variables of the interface and the component. Since this example consists of just a \texttt{LED} component and its interface, the sequence diagram does not give us much information that we could not already deduce from the state diagram in Figure \ref{fig:led_example_graph}. However, for more complex systems like our safety module given in Section \ref{Formal model of the behavior of the system}, the sequence diagrams will prove to be a very useful visualisation of the system.
 \\\\
-In the next section we will look at the C++ code we can generate from our LED example model.
+In Section \ref{Generating code from a verified Dezyne model} we will look at the C++ code we can generate from our LED example model.
 
 \begin{figure}[H]
     \centering
@@ -796,7 +722,7 @@ In the next section we will look at the C++ code we can generate from our LED ex
 
 \subsection{Generating code from a verified Dezyne model}
 \label{Generating code from a verified Dezyne model}
-    In this section we will look at the code generation feature of Dezyne. We will make use of the model from Figure \ref{fig:theoretical_background_dezyne_model} for the generation of the code. To make the demonstration simpler, instead of letting the \texttt{turnOff} and \texttt{turnOn} events be illegal on lines 12 and 16, we simply switch the state to \texttt{State.Off} and \texttt{State.On} respectively. we also added those actions to the component. Furthermore, to demonstrate the system component, which will be useful in code generation, we added a \texttt{IController} interface, a \texttt{Controller} component and a system component above the \texttt{ILED} interface. These additions are shown in Figure \ref{Addition of interface IController, component Controller and system component}. The system component generates a System view which is shown in Figure \ref{System view of the controller and led system}.
+    In this section we will look at the code generation feature of Dezyne. We will make use of the model from Figure \ref{fig:theoretical_background_dezyne_model} for the generation of the code. To make the demonstration simpler, instead of letting the \texttt{turnOff} and \texttt{turnOn} events be illegal on lines 12 and 16, we simply switch the state to \texttt{State.Off} and \texttt{State.On} respectively. we also added those actions to the component. Furthermore, to demonstrate the system component, which will be useful in code generation, we added a \texttt{IController} interface, a \texttt{Controller} component and a system component above the \texttt{ILED} interface. These additions are shown in Figure \ref{Addition of interface IController, component Controller and system component}. The system component generates a System view, which is shown in Figure \ref{System view of the controller and led system}.
     
 \begin{figure}[H]
     \centering
@@ -812,10 +738,10 @@ In the next section we will look at the C++ code we can generate from our LED ex
     \label{System view of the controller and led system}
 \end{figure}
 
-The Controller's job is to simply turn the led on and off with its \texttt{trigger} and \texttt{stop} functions. We can see that it does that by calling the \texttt{iLed.turnOn} and \texttt{iLed.turnOff} events. In line 22 of Figure \ref{Addition of interface IController, component Controller and system component} we specified that the controller component will call events from \texttt{ILED} with the \texttt{requires} keyword. In the component called \texttt{System} we see some more new syntax.  The system section, as indicated by the keyword \texttt{system}, consists of two parts: instantiations of subcomponents, followed by all the bindings among the sub-components and ports of the component. This results in the system view shown in  Figure \ref{System view of the controller and led system}. This system view shows all the components of the system. We will see how the system view is useful to us in the generated code shortly.
+The Controller's job is to simply turn the LED on and off with its \texttt{trigger} and \texttt{stop} functions. We can see that it does that by calling the \texttt{iLed.turnOn} and \texttt{iLed.turnOff} events. In line 22 of Figure \ref{Addition of interface IController, component Controller and system component} we specified that the controller component will call events from \texttt{ILED} with the \texttt{requires} keyword. In the component called \texttt{System} we see some more new syntax.  The system section, as indicated by the keyword \texttt{system}, consists of two parts: instantiations of subcomponents, followed by all the bindings among the sub-components and ports of the component. This results in the system view shown in  Figure \ref{System view of the controller and led system}. This system view shows all the components of the system. We will see how the system view is useful to us in the generated code shortly.
 \\\\
 % TODO: Add appendix
-We will now generate source code from the model. Dezyne provides the option to generate code in a variety of languages. For this example we choose to generate C++ code, as C++ is the language used for the safety module as well. In Listing \ref{lst:led_example code} we show a very minimal main function to use the generated code and Figure \ref{Execution of minimal led example code} shows the execution of the compilation of this code. The generated code itself can be found in Appendix \ref{}.
+We will now generate source code from the model. Dezyne provides the option to generate code in a variety of languages. For this example we choose to generate C++ code, as C++ is the language used for the safety module as well. In Listing \ref{lst:led_example code} we show a very minimal main function to use the generated code and Figure \ref{Execution of minimal led example code} shows the execution of the compilation of this code. The generated code itself can be found on \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our github repository}.
 
 \begin{listing}[ht]
 \begin{minted}[mathescape,
@@ -861,7 +787,7 @@ int main() {
 \end{figure}
 
 %TODO: Add ref
-Lines 7 to 11 concern the allocation and use of the Dezyne runtime. Usage of the Dezyne runtime is elaborated extensively in the documentation of the toolset (\cite{dzndoc}). On line 10 we declare a system object. The system object is useful because we can use it to check whether every function from dezyne is bound to a function in our C++ code and we can access our dezyne functions, \texttt{trigger} and \texttt{stop} through it, as is done on line 18 and line 20 respectively. In our simple example we have not bound any Dezyne functions to C++ code. In a real system we would bind the LED's \texttt{turnOn} and \texttt{turnOff} events to C++ functions that are able to turn a real LED on and off. Examples of the binding of Dezyne events to functions can be found in the documentation or in our Results on the modelling of the safety module in Section \ref{}. 
+Lines 7 to 11 concern the allocation and use of the Dezyne runtime. Usage of the Dezyne runtime is elaborated extensively in the documentation of the toolset (\cite{dzndoc}). On line 10 we declare a system object. The system object is useful because we can use it to check whether every function from dezyne is bound to a function in our C++ code and we can access our dezyne functions, \texttt{trigger} and \texttt{stop} through it, as is done on line 18 and line 20 respectively. In our simple example we have not bound any Dezyne functions to C++ code. In a real system we would bind the LED's \texttt{turnOn} and \texttt{turnOff} events to C++ functions that are able to turn a real LED on and off. Examples of the binding of Dezyne events to functions can be found in the Dezyne documentation or in our Results on the implementatoin of the safety module in Section \ref{}. 
 \par
 The executed code in Figure \ref{Execution of minimal led example code} shows how we simulate turning on and off a LED by giving the program the input \texttt{On} and \texttt{Off}. We can see that the controller calls \texttt{iLed.turnOn} and \texttt{iLed.turnOff} internally as we call \texttt{iController.trigger} and \texttt{iController.stop}.
 \\\\
@@ -869,13 +795,10 @@ There are many useful features of Dezyne we have not discussed. For example, the
 
 
 \chapter{Results}
-TODO\\
-O\\
-D\\
-O\\
+TODO Enhance intro:\\
 In this chapter we present the results of our research. First we will present our choice of hardware and choice of operating system.
 \par
-All code, documentation and models can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}.
+All code, documentation and models can be found on \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}.
 %    • weergave van de resultaten
 %    • beschrijving toe te passen theorie (let op: dit betekent dat er een deelvraag is die over de theorie gaat)
 %    • bespreek de resultaten in een logische volgorde (per deelvraag)
@@ -890,7 +813,7 @@ In this section we elaborate on the hardware and software choices that were made
 \subsection{Main component}
 \label{Main component}
 % TODO: ref to specification of Rose
-We will now look at the choices made for the hardware of the safety module. We will first look at the main component. The main component of the safety module specifies the heart of the system; the CPU, RAM, and related peripherals. In Chapter \ref{Theoretical Background} we explored previous research to see what others have used as their main component. In Section \ref{tHardware} we saw that \citeauthor{delgado} used a Raspberry Pi 3 in their control architecture on their mobile service robot. In Section  \ref{tHardware} we also noted that previous research describes the main component of the robot itself, while in our research the main component of the robot already exists; namely the robot, Rose, has two Ubuntu systems, \texttt{rosepc1} and \texttt{rosepc2} which together form the main component of the system, consisting of the CPU, RAM and related peripherals. \texttt{rosepc1} and \texttt{rosepc2} are connected to the grip arm Rose uses to grab items with, the kinect camera Rose uses to see her environment with and the WiFi router which connects Rose to her operator. \texttt{rosepc1} and \texttt{rosepc2} correspond with what \citeauthor{bouchier} described as the first architecture in \ref{tHardware}, a complete Linux distribution, but without real-time patches or a real-time framework. The safety module we implement in this research is an addition to the already existing system of Rose.\\
+We will now look at the choices made for the hardware of the safety module. We will first look at the main component. The main component of the safety module specifies the heart of the system: the CPU, RAM, and related peripherals. In Chapter \ref{Theoretical Background} we explored previous research to see what others have used as their main component. In Section \ref{tHardware} we saw that \citeauthor{delgado} used a Raspberry Pi 3 in their control architecture on their mobile service robot. In Section  \ref{tHardware} we also noted that previous research describes the main component of the robot itself, while in our research the main component of the robot already exists; namely the robot, Rose, has two Ubuntu systems, \texttt{rosepc1} and \texttt{rosepc2} which together form the main component of the system, consisting of the CPU, RAM and related peripherals. \texttt{rosepc1} and \texttt{rosepc2} are connected to the grip arm Rose uses to grab items with, the kinect camera Rose uses to see her environment with and the WiFi router which connects Rose to her operator. \texttt{rosepc1} and \texttt{rosepc2} correspond with what \citeauthor{bouchier} described as the first architecture in \ref{tHardware}, a complete Linux distribution, but without real-time patches or a real-time framework. The safety module we implement in this research is an addition to the already existing system of Rose.\\
 
 We will now look at available hardware solutions to determine what is the best choice for the main component of the hardware based on the requirements listed in Section \ref{Assignment specification}.
 \\
@@ -935,29 +858,28 @@ We gave the Arduino Uno SMD R3 only one point for \textit{real-time support} bec
 The last row shows the total score of each component. We can see that the score \gls{pi} 3B+ scored the highest, we therefore think the \gls{pi} 3B+ is the best choice for the main component of the safety module.
 
 \subsection{Measuring devices}
-Having chosen on the main component of the safety module system in Section \ref{Main component}, we looked into measuring devices for the \gls{pi} to fulfill Requirement \ref{hsFive} listed in Section \ref{Hardware setup}, namely the addition of an accelerometer for measuring acceleration and gyroscope for measuring angular velocity.
+Having chosen on the main component of the safety module system in Section \ref{Main component}, we looked into measuring devices for the \gls{pi} to fulfill Requirement \ref{hsFive} listed in Section \ref{Hardware setup}, namely the addition of an accelerometer for measuring acceleration and the addition of a gyroscope for measuring angular velocity.
 \par
 There are various options to add additional measuring devices to the \gls{pi}. One option is to buy the devices separately. Another option is to buy an add-on board commonly called a \gls{pi} HATs with multiple sensors on it. We went for the second option, as it greatly decreases development time and is extensible for future releases of the safety module. We chose the \gls{pi} Sense HAT, as it was the most readily available \gls{pi} HAT that contained both an accelerometer and a gyroscope. In addition to this, the \gls{pi} Sense HAT has a number of advantages over using separate measuring devices:
 
-% TODO: Add ref to library explanation
 % TODO: Perhaps elaborate the LED matrix part.
-% TODO: Perhaps remove the ref.
 \begin{itemize}
     \item The Sense HAT has a magnetometer for measuring the magnetic field at a particular location
-    \item The Sense HAT can fuse accelerometer, gyroscope and magnetometer data to reduce uncertainty in measurements.
-    \item The Sense HAT comes with a library that can be used to receive data from the sensors on the Sense HAT. We will elaborate the usage of this library in Section \ref{}.
-    \item The Sense HAT has a LED matrix which can be used to show the results of safety checks.
+    \item The Sense HAT can fuse accelerometer, gyroscope and magnetometer data to reduce uncertainty in measurements
+    \item The Sense HAT comes with a library that can be used to receive data from the sensors on the Sense HAT.
+    \item The Sense HAT has a LED matrix which can be used to show the results of safety checks
 \end{itemize}
 
-Furthermore, the Sense HAT has a humidity sensor, a  pressure sensor and an on board joystick. These are not needed for the prototype of the safety module, but could be useful for further releases of the safety module. For example, the joystick can be used for adding minimal control support for when the joystick of Rose her operator does not work. The humidity sensor and pressure sensor could be used to get more detailed information on the environment a care robot is located in.
+Furthermore, the Sense HAT has a humidity sensor, a  pressure sensor and an onboard joystick. These are not needed for the prototype of the safety module, but could be useful for further releases of the safety module. For example, the joystick can be used for adding minimal control support for when the joystick of Rose her operator does not work. The humidity sensor and pressure sensor could be used to get more detailed information on the environment Rose is located in.
 \par
 % TODO: ref to the chapter 2 section where that is described.
-Figure \ref{sensehat} shows the sense HAT. The components of interest for us in this research are the the inertial measurement unit (IMU), labeled \texttt{ACCEL/GYRO/MAG}, which contain the accelerometer, the gyroscope and the magnetometer, and the LED matrix. The name of the IMU itself is \textit{LSM9DS1}. Figure \ref{} shows the orientation of the IMU. The orientation is such that if we lay down the \gls{pi} with Sense HAT attached in front of us, in such a way that the Ethernet port points towards us, then that is the direction labeled X. As we can see, the Z direction denotes the up -down direction, and the only other direction left is the Y direction. The fact that we live in a universe with three spatial dimensions complicates the way we want to measure acceleration a bit. The measuring of the quantities of acceleration and angular displacement will be elaborated in Section \ref{}.
+Figure \ref{fig:sensehat} shows the Sense HAT. The components of interest for us in this research are the the inertial measurement unit (IMU), labeled \texttt{ACCEL/GYRO/MAG}, which contain the accelerometer, the gyroscope and the magnetometer, and the LED matrix. The name of the IMU itself is \textit{LSM9DS1}. Figure \ref{fig:imu_orientation} shows the orientation of the IMU. The orientation is such that if we lay down the \gls{pi} with Sense HAT attached in front of us, in such a way that the Ethernet port points towards us, then that is the direction labeled X. As we can see, the Z direction denotes the up -down direction, and the only other direction left is the Y direction. The fact that we live in a universe with three spatial dimensions complicates the way we want to measure acceleration a bit. The measuring of the quantities of acceleration and angular displacement will be elaborated in Section \ref{Retrieving and Using Sensor Data}.
 
+% TODO: Replace with self made figures.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/results/sense_hat_correct.jpg}
-    \caption{Raspberry pi sense hat, source: \cite{sensehat}}
+    \caption{\gls{pi} Sense HAT, source: \cite{sensehat}}
     \label{fig:sensehat}
 \end{figure}
 
@@ -988,27 +910,27 @@ As was shortly mentioned in Section \ref{tOS}, Xenomai provides various skins. T
     \item Scheduling management
 \end{itemize}
 
-These POSIX services are wrapped around with Xenomai versions of the calls. For example, if one calls the \mintinline{c}{pthread_create} function to create a new thread in the C or C++ programming language, what is actually called is a real-time implementation of the system call provided by the Xenomai framework.
+These POSIX services are wrapped around with Xenomai versions of the calls. For example, if one calls the \mintinline{c}{pthread_create} function to create a new thread in the C programming language or the C++ programming language, what is actually called is a real-time implementation of the system call provided by the Xenomai framework.
 \par
 % TODO: Ref to results S4
-The reason we choose to work with the POSIX skin as opposed to other skins is that the POSIX skin avoids the need to rewrite device drivers written for standard, non-Xenomai Linux, as such device drivers often use the POSIX services given in the previous. In our case this avoids the need to rewrite the driver for the Sense HAT. Likewise, \acrshort{ros} is targeted for standard Linux and not Xenomai, so using the POSIX skin also avoids having to rewrite \acrshort{ros} services. Section \ref{} shows how we implemented the safety module using the xenomai framework.
+The reason we choose to work with the POSIX skin as opposed to other skins is that the POSIX skin avoids the need to rewrite device drivers written for standard, non-Xenomai Linux, as such device drivers often use the POSIX services given in the previous list. In our case, this avoids the need to rewrite the driver for the Sense HAT. Likewise, \acrshort{ros} is targeted for standard Linux and not Xenomai, so using the POSIX skin also avoids having to rewrite \acrshort{ros} services. Section \ref{} shows how we implemented the safety module using the xenomai framework.
 \\\\
-We have built \acrshort{ros} for Raspbian and installed it on our system. For this research we will simulate interaction with care robot rose and ROS and will not use this installation, however. The reason we installed \acrshort{ros} is to show the feasibility of using the system of the \gls{pi}, raspbian with xenomai as a whole.
+We have built \acrshort{ros} for Raspbian and installed it on our system. For this research we will simulate interaction with care robot Rose and ROS and we will not use this installation, however. The reason we installed \acrshort{ros} nonetheless is to show the feasibility of using the system of the \gls{pi} using raspbian with xenomai, as a whole.
 \par
 % TODO: ref to dezyne chapter.
-Figure \ref{} gives a high overview of this system as a whole, visualised as a stack. On the bottom we have the \gls{pi} with the Sense HAT, this denotes our hardware. On top of that we have got the Linux kernel and the Xenomai cokernel, which run besides each other. Then we have got Raspbian Buster, the operating system. On top we see RTIMULib, Dezyne and \acrshort{ros}. RTIMULib is the library used to communicate with the sense hat. Dezyne is the modelling language we use, which uses its own runtime library. The use of Dezyne is elaborated extensively in its own chapter, Chapter \ref{}. The reason RTIMULib and \acrshort{ros} are shown on top, despite the fact that both communicate with the hardware of the bottom layer, is because RTIMULib and \acrshort{ros} are both libraries called from user space. We can say that anytime we want to access a hardware device in our proram we traverse the stack from top to bottom.
+Figure \ref{stack} gives a high overview of this system as a whole, visualised as a stack. On the bottom we have the \gls{pi} with the Sense HAT, this is our hardware. On top of that there are the Linux kernel and the Xenomai cokernel, which run next to each other. Then there is Raspbian Buster, the operating system. On top we see RTIMULib, Dezyne and \acrshort{ros}. RTIMULib is the library used to communicate with the Sense HAT. Dezyne is the modelling language we use, which uses its own runtime library. The use of Dezyne is elaborated extensively in its own section, Section \ref{Formal model of the behavior of the system}. The reason RTIMULib and \acrshort{ros} are shown on top, despite the fact that both communicate with the hardware of the bottom layer, is because RTIMULib and \acrshort{ros} are both libraries called from user space. We can say that anytime we want to access a hardware device in our proram we traverse the stack from top to bottom.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/results/os_environment_stack.png}
     \caption{Safety module system stack}
-    \label{fig:my_label}
+    \label{fig:stack}
 \end{figure}
 
 
 % TODO: ref to section
 %       fix list reference (actually ref to the list and not the section.
-Let us look at a communication scheme of the system and how the Xenomai framework provides us with real-time operation of the safety module. In Figure \ref{fig:communication_scheme} an overview of the communication scheme of the system is given. On the left side we can see our program and the Xenomai core. These are are in \textit{primary mode}, primary mode is the real-time domain; the part of the system that operates real-time, because it is governed by the Xenomai cokernel. This is due to that all scheduling of tasks in primary mode is handled by the Xenomai core. The Xenomai framework provides us with the ability to make a subset of system calls, the ones from the items listed in List \ref{posix_wrapped} without leaving primary mode. We depicted Dezyne to be inside our program, in primary mode. The code that Dezyne generates from the model is essentially the control loop of the safety module system. This control loops executes five checks, this is why there are five lines of communication going through the entire system in the overview of Figure \ref{fig:communication_scheme}. These checks are checks on five aspects of the robot: the kinetic energy, the rotational energy , the grip arm strength, both force and torque, and grip arm position. These checks are elaborated extensively in the subsequent Results sections. RTIMULib and ROS communicate with device drivers written for the standard Linux kernel, meaning they do not run in primary mode, but \textit{secondary mode}. Secondary mode is the non-real-time domain; the part of the system that does not operate in real-time and is governed by the standard Linux kernel. This brings us to a problem. Our program needs to communicate with these libraries, and therefore with these device drivers, but if it does so it would make a mode switch by moving from primary mode to secondary mode. One solution would be to reimplement all used device drivers to work with the xenomai framework, so that they can run in primary mode. This solution, however, takes a lot of development time and research into how to convert standard linux drivers to real-time drivers. Luckily, Xenomai provides us with another solution: the use of XDDP sockets. XDDP sockets allow the part of the system running in primary mode to communicate data with the part of the system running in secondary mode, without the former leaving primary mode. This is good because now we can set up the system as follows. In primary mode the control loop runs in real-time governed by the Xenomai cokernel. In secondary mode, threads retrieving data from the sensors are running and provide their data on the XDDP socket, which can then be read by the threads of the program running in primary mode. This set up gets rid of the problem of our control loop needing to leave primary mode to access sensor data. However, now, there is another problem luring in the background. What should we do when the sensor data is not provided by the non-real-time thread when a real-time thread requires it? We go into more detail on this problem in Section \ref{}, but essentially the real-time checks just keep going regardless of whether there is data provided by the non-real-threads. That is to say, the checks do not block if there is no data available.
+Let us look at a communication scheme of the system and how the Xenomai framework provides us with real-time operation of the safety module. In Figure \ref{fig:communication_scheme} an overview of the communication scheme of the system is given. On the left side we can see our program and the Xenomai core. These run in \textit{primary mode}, primary mode is the real-time domain; the part of the system that operates real-time, because it is governed by the Xenomai cokernel. This is due to that all scheduling of tasks in primary mode is handled by the Xenomai core. The Xenomai framework provides us with the ability to make a subset of system calls, the ones from the items listed in List \ref{posix_wrapped} without leaving primary mode. We depicted Dezyne to be inside our program, in primary mode. The code that Dezyne generates from the model is essentially the control loop of the safety module system. This control loops executes five checks, this is why there are five lines of communication going through the entire system in the overview of Figure \ref{fig:communication_scheme}. These checks are checks on five aspects of the robot: the kinetic energy, the rotational energy , the grip arm strength, both force and torque, and grip arm position. These checks are elaborated extensively in the subsequent Results sections. RTIMULib and ROS communicate with device drivers written for the standard Linux kernel, meaning they do not run in primary mode, but \textit{secondary mode}. Secondary mode is the non-real-time domain; the part of the system that does not operate in real-time and is governed by the standard Linux kernel. This brings us to a problem. Our program needs to communicate with these libraries, and therefore with these device drivers, but if it does so it would make a mode switch by moving from primary mode to secondary mode. One solution would be to reimplement all used device drivers to work with the Xenomai framework, so that they can run in primary mode. This solution, however, takes a lot of development time and research into how to convert standard linux drivers to real-time drivers. Luckily, Xenomai provides us with another solution: the use of XDDP sockets. XDDP sockets allow the part of the system running in primary mode to communicate data with the part of the system running in secondary mode, without the former leaving primary mode. This is good because now we can set up the system as follows. In primary mode the control loop runs in real-time governed by the Xenomai cokernel. In secondary mode, threads retrieving data from the sensors are running and provide their data on the XDDP socket, which can then be read by the threads of the program running in primary mode. This set up does away with the problem of our control loop needing to leave primary mode to access sensor data. However, now, there is another problem luring in the background. What should we do when the sensor data is not provided by the non-real-time thread when a real-time thread requires it? We go into more detail on this problem in Section \ref{}, but essentially the real-time checks just keep going regardless of whether there is data provided by the non-real-threads. That is to say, the checks do not block if there is no data available.
 
 \begin{figure}[H]
     \centering
@@ -1020,24 +942,24 @@ Let us look at a communication scheme of the system and how the Xenomai framewor
 \newpage
 \section{Retrieving and Using Sensor Data}
 \label{Retrieving and Using Sensor Data}
-In this section we elaborate our results on how to retrieve sensor data and use this data to check whether the safety module has performs unsafe actions.
+In this section we elaborate our results on how to retrieve sensor data and use this data to check whether the safety module has performed an unsafe actions.
 \par
-In Section \ref{Assignment specification} we defined unsafe behaviour as behavior that could result in injury to humans or damage to the environment by collision, clamping or pinching of the care robot with an object or human. The goal of the safety module is to provide a second layer of safety checks upon the already existing safety checks by the care robot itself. In Section \ref{Safety in care robots} we explored the how existing research measures safety in robots. We implement a rudimentary form of some of these safety checks by looking at four aspects of the care robot. These are: its kinetic energy, its rotational energy, its grip arm strength and the position of the grip arm. These aspects were given on the Risk Analysis for additional safety measures of robot Rose (\cite{risk_analysis_additional}).
+In Section \ref{Assignment specification} we defined unsafe behaviour as behavior that could result in injury to humans or damage to the environment by collision, clamping or pinching of the care robot with an object or human. The goal of the safety module is to provide a second layer of safety checks upon the already existing safety checks by the care robot itself. In Section \ref{Safety in care robots} we explored how existing research measures safety in service robots. We implement a rudimentary form of some of these safety checks by looking at five aspects of the care robot. These are: its kinetic energy, its rotational energy, its grip arm force and torque and its grip arm's position. These aspects were given on the Risk Analysis for additional safety measures of robot Rose (\cite{risk_analysis_additional}).
 
 \subsection{Sensors on the safety module}
-The sensors of the Sense HAT of the safety module are used to check the kinetic energy and rotational energy of the robot. The safety module is attached to the care robot, and should be attached in a way such that the x-axis (see Figure \ref{fig:imu_orientation}) points forward.
+The sensors of the Sense HAT of the safety module are used to check the kinetic energy and rotational energy of the robot. The safety module is attached to the care robot, and should be attached in a way such that the x-axis (see Figure \ref{fig:imu_orientation}) points forward; along with the front of Rose.
 \par
-We make use of the RTIMULib library, an open-source library that provides us an application programming interface (API) to interact with the accelerometer, gyroscope and magnetometer of the LSM91DS1, the inertial measurement unit of the Sense HAT \cite{rtimulib}. With the use of a Kalman-filter the library provides fused data of the accelerometer, gyroscope and magnetometer. Kalman-filtering is a technique to provide an accurate measure of, in our case, the angular orientation of the safety module.
+We make use of the RTIMULib library, an open-source library that provides us an application programming interface (API) to interact with the accelerometer, gyroscope and magnetometer of the LSM91DS1, the inertial measurement unit of the Sense HAT (\cite{rtimulib}). With the use of a Kalman-filter the library provides fused data of the accelerometer, gyroscope and magnetometer. Kalman-filtering is a technique to provide an accurate measure of, in our case, the angular orientation of the safety module.
 
 \subsubsection{Kinetic energy}
 \label{Kinetic energy}
-First we will look at the aspect of kinetic energy. In classical mechanics, kinetic energy is defined as follows:
+First we will look at the aspect of kinetic energy. In Newtonian mechanics, kinetic energy is defined as follows:
 
 \begin{equation} \label{eq:ke}
     E_k = \frac{1}{2}mv^2
 \end{equation}
 
-where $m$ is the mass and $v$ the velocity of the object undergoing linear translation. Robot Rose's mass is $95kg$ (\cite{rose_specification}), the \gls{pi}'s mass is $45g$ (\cite{raspberry_pi_weight}) and the Sense HAT's mass is $20g$ (own measurement). That gives us $m = m_{tot} = 95.65kg$. Velocity we do not measure directly, instead we measure the acceleration using the accelerometer on the Sense HAT. To obtain velocity $\vec{v}$ from acceleration $\vec{a}$, we numerically integrate $\vec{a}$ using the following equation:
+where $m$ is the mass of the object undergoing linear translation and $v$ the velocity of the object undergoing linear translation. Robot Rose's mass is $95kg$ (\cite{rose_specification}), the \gls{pi}'s mass is $45g$ (\cite{raspberry_pi_weight}) and the Sense HAT's mass is $20g$ (own measurement). That gives us $m = m_{tot} = 95.65kg$. Velocity we do not measure directly, instead we measure the acceleration using the accelerometer on the Sense HAT. To obtain velocity $\vec{v}$ from acceleration $\vec{a}$, we numerically integrate $\vec{a}$ using the following equation:
 
 \begin{equation} \label{eq:trapezoidal_rule}
     \vec{v} = \int_{t_0}^t \vec{a}\ dt \approx \sum_{t=1}^{N} \frac{\vec{a}(t-1) + \vec{a}(t)}{2}\Delta t
@@ -1045,9 +967,9 @@ where $m$ is the mass and $v$ the velocity of the object undergoing linear trans
 
 where $N$ is the number of samples, and $\Delta t$ is a small change in time. Equation \ref{eq:trapezoidal_rule} is called the \textit{Trapezoidal rule}. For larger $N$ and smaller $\Delta t$ the approximation becomes more accurate. We have determined an appropriate value for $N$ and $\Delta t$ such that the time taken to sample the acceleration is proportional to the recommended poll interval of the IMU as given by RTIMULib.
 \par
-Various sources report the occurrence of drift error due to sensor noise by using integration to obtain velocity from acceleration (\cite{chrobotics}) (\cite{googletechtalks}) (\cite{Woodman07anintroduction_oliver}). For the double integration that is done to obtain position the error is even worse. However, we can still use this method of determining velocity for our purposes, for the obtained velocity is accurate enough to determine kinetic energy and we discard the value of velocity after determining the kinetic energy gained from it. Every time we calculate the kinetic energy, we do so by obtaining the kinetic energy that is gained from the change in acceleration, that is to say, our error does not get increasingly worse, because we only measure changes in acceleration and do not take into account the velocity the robot may already have.
+Various sources report the occurrence of drift error due to sensor noise by using integration to obtain velocity from acceleration (\cite{chrobotics}) (\cite{googletechtalks}) (\cite{Woodman07anintroduction_oliver}). For the double integration that is done to obtain position the error is even worse. However, we can still use this method of determining velocity for our purposes, for the obtained velocity is accurate enough to determine kinetic energy and we discard the value of velocity after determining the kinetic energy gained from it. Every time we calculate the kinetic energy, we do so by obtaining the kinetic energy that is gained from the change in acceleration. Our error does not get increasingly worse, because we only measure changes in acceleration and do not take into account the velocity the robot may already have.
 \par
-A subtle, but important point that follows from this, is that we do not actually measure the kinetic energy of the robot, but the change in kinetic energy. Furthermore, with discarding the previous value of velocity we mean we set the initial velocity to be zero every time we want to calculate the kinetic energy. So the following equation holds:
+A subtle, but important point that follows from this, is that we do not actually measure the kinetic energy of the robot, but the change in kinetic energy. Furthermore, with discarding the previous value of velocity we mean we set the initial velocity to be zero every time we want to calculate the kinetic energy. The result is that the following equation holds:
 \\\\
 % TODO: ref recommendations
 
@@ -1058,11 +980,11 @@ A subtle, but important point that follows from this, is that we do not actually
 where $\Delta v$ is the change in velocity and $\vec{v_i}$ is the initial velocity.
 \par
 % TODO: tHardware ref correct here?
-Excessive change in kinetic energy will cause the robot to collide with a human or object, which we defined as a form of unsafe behavior. To avoid this, the obtained change in kinetic energy is compared to the maximum allowed change in kinetic energy. For our purposes, this maximum allowed change in kinetic energy is the same for every situation. The maximum allowed change in kinetic energy is given as input to the safety module either in a file or as command line argument. The value is not determined by us, but by the company or organisation who employs the safety module, who has tested and determined an appropriate value for this variable. We have chosen a value that most clearly demonstrates the use of the check on kinetic energy.
+Excessive change in kinetic energy will cause the robot to collide with a human or object, which we defined as a form of unsafe behavior. To avoid this, the obtained change in kinetic energy is compared to the maximum allowed change in kinetic energy. For our purposes, this maximum allowed change in kinetic energy is the same for every situation. The maximum allowed change in kinetic energy is given as input to the safety module either in an input file or as command line argument. The value is not determined by us, but by the company or organisation who employs the safety module, who has tested and determined an appropriate value for this variable. We have chosen a value that most clearly demonstrates the use of the check on kinetic energy.
 
 \subsubsection{Rotational energy}
 \label{Rotational energy}
-The rotational energy is determined similarly to the kinetic energy, but using angular variables instead, and we calculate the actual rotational energy, not the change in rotational energy. The rotational energy is calculated using the following equation:
+The rotational energy is determined comparable analogous to the kinetic energy, but using angular variables instead, and we calculate the actual rotational energy, not the change in rotational energy. The rotational energy is calculated using the following equation:
 
 \begin{equation}
     %\Delta E_{rot} = \frac{1}{2}I(\Delta\omega)^2 \implies \Delta E_{rot} = \frac{1}{2}I\omega^2,\quad if\ \vec{\omega_i} = 0
@@ -1083,12 +1005,12 @@ The fused accelerometer, gyroscope and magnetometer data gives us an accurate me
     \vec{\omega} = \frac{d\vec{\theta}}{dt} \approx \frac{\Delta\vec{\theta}}{\Delta t} = \frac{\vec{\theta}(t + \Delta t ) - \vec{\theta}(t)}{\Delta t}
 \end{equation}
 
-Here $\Delta t$ is a small change in time, which is, just like the $\Delta t$ used in the determinatino of the velocity in Section \ref{Kinetic energy}, proportional to the poll rate of the IMU.
+Here $\Delta t$ is a small change in time, which we set to be proportional to the poll rate of the IMU, just like with $\Delta t$ used in the calculation of the linear velocity for the kinetic energy.
 \par
-Excessive rotational energy will cause the linear momentum of the robot to be too great when it rotates, which results can result in damage to the environment or injury to humans. Therefore, just like with kinetic energy the rotational energy is compared to a maximum allowed value.
+Excessive rotational energy will cause the linear momentum of the robot to be too great when the robot makes a turn, which can result in damage to the environment or injury to humans. Therefore, just like with kinetic energy, the rotational energy is compared to a maximum allowed value which is given in an input file or command line argument.
 
 \subsection{Sensors on robot Rose}
-Ultimately, Rose's arm sensors will be used to retrieve the strength and position of the arm. These values are received from \acrshort{ros}. ROS provides a publisher-subscriber type of pattern in which a subscriber can listen on a \textit{topic} on which the publisher publishes data. In our case the subscriber would be the safety module and the publisher would be Rose. Topics in ROS are just a collection of messages concerning a particular subject, where a message is the means of communication of data in \acrshort{ros} (\cite{agitr}).
+Ultimately, Rose's arm sensors will be used to retrieve the strength and position of the arm. These values are received from \acrshort{ros}. ROS provides a publisher-subscriber type of pattern in which a subscriber can listen on a \textit{topic} on which the publisher publishes data. In our case the subscriber would be the safety module and the publisher would be Rose. Topics in ROS are collections of messages concerning a particular subject, where a message is the means of communication of data in \acrshort{ros} (\cite{agitr}).
 \par
 Currently we use generated values from within the safety module itself and do not communicate with robot Rose through \acrshort{ros}. We have still installed ROS on the safety module to show the feasiblity of the system as a whole. Documentation on the installation of ROS on the safety module can be found on \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our github repository}.
 \subsubsection{Force and torque}
@@ -1102,19 +1024,19 @@ The last check on unsafe behavior concerns the arm position of the robot. When t
 \subsection{When the result of a check gives unsafe behavior}
 \label{When the result of a check gives unsafe behavior}
 % TODO: ref to modelling section.
-What should we do when a check is executed and the maximum allowed value for the kinetic energy, rotational energy, force, torque is exceeded, or when the arm is not folded when the robot is moving? 
-These are the situations we call unsafe behavior. In such a case, the LED matrix receives a signal to turn red. On default, the LED matrix is low. When a check is executed and the result of the check is that there is no unsafe behavior, the LED matrix receives a signal to turn blue. Only when the result is that there is unsafe behavior does the LED matrix receive a signal to turn red. checks are executed in sequence. An important point to note here is that situations exist where, for example, the result of the very first check of the five checks gives unsafe behavior, while the subsequent checks give safe behavior. In such a case, the LED matrix should turn red after the first check, and stay red after the subsequent checks. This is because unsafe behavior of one aspect is not supposed to be overridden with safe behavior of another aspect. We therefore specify that once the result of a check gives unsafe behavior, the LED stays red until an acknowledge action is executed. This acknowledge action, among other actions, is elaborated in Section \ref{}.
+What should we do when a check is executed and the maximum allowed value for the kinetic energy, rotational energy, force, torque is exceeded, or the arm is not folded when the robot is moving? 
+These are the situations we call unsafe behavior. In such a case, the LED matrix receives a signal to turn red. On default, the LED matrix is low. When a check is executed and the result of the check is that there is no unsafe behavior, the LED matrix receives a signal to turn blue. Only when the result is that there is unsafe behavior does the LED matrix receive a signal to turn red. checks are executed in sequence. An important point to note here is that situations exist, where, for example, the result of the first of the five checks gives unsafe behavior, while the subsequent checks give safe behavior. In such a case, the LED matrix should turn red after the first check, and stay red after the subsequent checks. This is because unsafe behavior of one safety check is not supposed to be overridden with safe behavior of another safety check. We therefore specify that once the result of a check gives unsafe behavior, the LED stays red until an acknowledge action is executed. This acknowledge action, among the other actions of the system, is elaborated in Section \ref{Formal model of the behavior of the system}.
 
 \newpage
 \section{Modelling the system}
-In this section we elaborate how we modelled the system. In Subsection \ref{Formal model of the behavior of the system} we present a formal model of the behavior of the safety module made with the modelling toolset Dezyne. In Subsection \ref{Other models of the system}, we present other models we have create to model the system. Some auxiliary models can be found in Appendix \ref{Additional Models}, and all models, in general, can be found in \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}. We avoid showing the syntax of the Dezyne language itself wherever possible, to make the results accesible to a greater public. Dezyne files can be found in the GitHub repository as well. The have the \texttt{.dzn} extension.
+In this section we elaborate how we modelled the system. In Subsection \ref{Formal model of the behavior of the system} we present a formal model of the behavior of the safety module made with the modelling toolset \textit{Dezyne}. In Subsection \ref{Other models of the system}, we present a number of models we have created to model aspects of the system not captured by Dezyne. Some auxiliary models can be found in Appendix \ref{Additional Models}, and all models, in general, can be found on \href{https://github.com/Yousousen/safety-module-for-care-robot-rose.git}{our GitHub repository}. We avoid to show the syntax of the Dezyne language itself wherever possible, to make these results readable for a greater public. One can take a look at the GitHub repository to see the syntax of the modelling language. The Dezyne files can be recognized by their \texttt{.dzn} extension.
 
 \subsection{Formal model of the behavior of the system}
 \label{Formal model of the behavior of the system}
-The basics of the Dezyne toolset and modelling language were elaborated extensively in Section \ref{The Dezyne toolset and the Dezyne modelling language}. There we also explained what Dezyne's behavior verification does. In short, it checks the system on the occurrence of race conditions, deadlocks, livelocks, mismatches between specification and implementation and other concepts related to deterministic behavior of the system. The language also has the capability to check the system on functional behavior. That is to say, it checks whether a system, after executing a set of actions, is in the expected system state. In this section we will present our formal behavior model of the safety module. We will first present an overview of the system, which shows us all components of the system, then we will work inside out, going through the individual components of the system.
+The basics of the Dezyne toolset and modelling language were elaborated extensively in Section \ref{The Dezyne toolset and the Dezyne modelling language}. There we also explained what Dezyne's behavior verification does. In short, it checks the system on the occurrence of race conditions, deadlocks, livelocks, mismatches between specification and implementation and other concepts related to deterministic behavior of the system. The language also has the capability to check the system on functional behavior. That is to say, it checks whether a system, after executing a set of actions, is in the expected system state. If it is not, this will be output as a functional verification error. In this section, we will present our formal behavior model of the safety module. We will first present an overview of the system, which shows us all components of the system, then we will work inside out, going through the individual components of the system.
 \subsubsection{System overview}
 \label{System overview}
-Figure \ref{fig:safety_module_system_view} shows the system overview. An alternative representation of this same view is given in Appendix.
+Figure \ref{fig:safety_module_system_view} shows the system overview. An alternative representation of this same view is given in Appendix \ref{Additional Models}.
 
 \begin{figure}[H]
     \centering
@@ -1123,16 +1045,16 @@ Figure \ref{fig:safety_module_system_view} shows the system overview. An alterna
     \label{fig:safety_module_system_view}
 \end{figure}
 
-In Figure \ref{fig:safety_module_system_view} we can see (if we squint our eyes a little) the hierarchy of all components that are implemented in Dezyne. On top there is the \texttt{Controller}. The \texttt{Controller} governs the entire system, and executes checks in sequence. These checks are checks on kinetic energy, rotational energy, force of the grip arm, torque of the grip arm and position of the grip arm, like we established in Section \ref{Retrieving sensor data from Rose}. Each check is implemented like an element in a linked list. A linked list is a data structure in which each element of the list points to the next element. So in this case, each check points to and executes the next check. This is to provide the system a level of abstraction and generality. When one wishes to add a new check to the system, one does not need to make changes to the \texttt{Controller}, and the only thing that needs to be changed is the pointer that points to the next check at the location in the list one wishes to add the new check. No changes need to be made to any other aspect of the system logic outside of the added check itself.
+In Figure \ref{fig:safety_module_system_view} we can see (if we squint our eyes a little) the hierarchy of all components that are implemented in Dezyne. On top there is the \texttt{Controller}. The \texttt{Controller} governs the entire system, and executes safety checks in sequence. These checks are checks on kinetic energy, rotational energy, force of the grip arm, torque of the grip arm and position of the grip arm, like we established in Section \ref{Retrieving and Using Sensor Data}. Each check is implemented like an element in a linked list. A linked list is a data structure in which each element of the list points to the next element. So, in this case, each check points to and executes the next check. This is to provide the system a level of abstraction and generality. When one wishes to add a new check to the system, one does not need to make changes to the \texttt{Controller}, and the only thing that needs to be changed is the pointer that points to the next check at the location in the list one wishes to add the new check. No changes need to be made to any other aspect of the system logic outside of the added check itself.
 \par
-Every check returns a value, \texttt{Safe} or \texttt{Unsafe}, which indicates whether the executed action of the care robot results in safe or unsafe behavior. 
+Every check returns a value, \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe}, which indicates whether the executed action of the care robot results in safe or unsafe behavior. 
 \par
-The model can be simulated, which shows a trace of a system along a certain path of actions which results in a sequence diagram, as we will see in subsequent subsections. In such a simulation we can choose whether a particular check returns safe or unsafe behavior ourselves. In the real non-simulated system, the system will return safe or unsafe behavior based on whether the retrieved value of the quantity the check examines exceeds the maximum allowed value, or, in the case of the arm position, whether the arm is or is not in folded position. 
+The model can be simulated, which shows a trace of a system along a certain path of actions which results in a sequence diagram, as we will see in subsequent subsections. In such a simulation we can choose whether a particular check returns safe or unsafe behavior ourselves. In the real non-simulated system, however, the system will return safe or unsafe behavior based on whether the retrieved value of the quantity the check examines exceeds the maximum allowed value, or, in the case of the arm position, whether the arm is or is not in folded position. 
 \par
 % Ref to SQ 4
 In Figure \ref{fig:safety_module_system_view} we can see blue squares going into and out of components. These are called \textit{ports}. In Section \ref{The Dezyne toolset and the Dezyne modelling language} we mentioned how source code can be generated from Dezyne models. Ports on the the edges of the system need to be bound in implementation code to generated source code. More specifically, the single port at the top of the system view denotes the \texttt{Controller} port that we need to bind to a function in implementation code in order to execute the dezyne system, or, in other words, the safety checks. The six ports at the bottom are ports that also need to be bound in implementation code, but these are executed by Dezyne internally, that is, we assign a function for Dezyne to execute by binding these ports. The binding of ports is elaborated from the implementation point of view in Section \ref{}.
 \par
-In Section \ref{The Dezyne toolset and the Dezyne modelling language} we mentioned how a Dezyne model consists of interfaces and components, where interfaces specify the behavior a component should conform with and which events or actions a component can execute. It should be noted that the system view of Figure \ref{fig:safety_module_system_view} only shows us the components of the system. It does not show us interfaces of components. This is because an interface is a specification and not an actual implementation (component) of an aspect of the system. Interfaces are still aspects of the system that can be verified on behavior, however, as we will see when we examine the behavior of \texttt{LEDControl}, an interface that concerns itself with turning the LED matrix blue in case of safe behavior and red in case of unsafe behavior of the care robot.
+In Section \ref{The Dezyne toolset and the Dezyne modelling language} we mentioned how a Dezyne model consists of interfaces and components, where interfaces specify the behavior a component should conform with and which events or actions a component can execute. It should be noted that the system view of Figure \ref{fig:safety_module_system_view} only shows us the components of the system. It does not show us interfaces of components. This is because an interface is a specification and not an actual implementation of an aspect of the system. Interfaces are still aspects of the system that can be verified on behavior, however, as we will see when we examine the behavior of \texttt{ILEDControl}, an interface that concerns itself with turning the LED matrix blue in case of safe behavior of the care robot and red in case of unsafe behavior of the care robot.
 \\\\
 The system consists of the following interfaces:
 
@@ -1148,14 +1070,14 @@ We will first elaborate \texttt{ILEDControl}, \texttt{ISafetyCheck}, \texttt{ISe
 
 \subsubsection{ILEDControl}
 % Note that LEDControl does not have a component in dezyne.
-\texttt{ILEDControl} is an interface that specifies the behavior of the safety module in context of controlling the LED matrix. It has no component in Dezyne. An implementation of this interface, in other words, a component, is mostly concerned with communicating with the LED matrix framebuffer. Communicating with hardware through device drivers is not a task for Dezyne, as it does not involve serious control logic, and only involves the retrieval of data through a device driver. So the component of \texttt{ILEDControl} is actually completely implemented in implementation code. As we mentioned in the previous section, there is still control logic to verify for Dezyne in the interface. In Figure \ref{fig:ILEDControl_event_table} the event table of \texttt{ILEDControl} is shown. In this table the blue rows are the events that the \texttt{ILEDControl} interface can execute. In the \textit{States} column denotes the state we are in; and behavior is different depending on which the interface is in. The second column shows guard conditions. These are conditionals that further influence what kind of behavior is allowed in a certain state. The \textit{Code} column shows the actual code that is executed, and the \textit{Next} column is the state the interface will be in after executing the code. Let us look at the first event, \texttt{initialise\_framebuffer}. This event, as the name suggests, initialises the framebuffer that is used to communicate with the LED matrix. When the system is in the \texttt{Idle} state, this event will result in a transition to the \texttt{Operating} state. If the system is already in the \texttt{Operating} state when the \texttt{initialise\_framebuffer} action is executed, then this is an illegal action, as denoted by the \texttt{illegal} keyword in the Code column. This makes sense, as we do not want to initialise an already initialised framebuffer, and once the ILEDControl is operating, the framebuffer should already be initialised. One of the key features of Dezyne is that, once we generate source code from this model, we are not allowed to execute the \texttt{initialise\_framebuffer} action in implementation code either, because in the model we specified that this should not be possible. It is these kind of checks from Dezyne that make sure the transition from model to implementation happens smoothly and without error. \par
-In contrast, the \texttt{destruct\_framebuffer} event is only allowed to be executed if the interface is in the \texttt{Operating} state. If the system is in the \texttt{Idle} state, there is nothing to destruct, for in the \texttt{Idle} we have not initialised the framebuffer.
+\texttt{ILEDControl} is an interface that specifies the behavior of the safety module in context of controlling the LED matrix. It has no component in Dezyne. An implementation of this interface, in other words, a component, is mostly concerned with communicating with the LED matrix framebuffer. Communicating with hardware through device drivers is not a task for Dezyne, as it does not involve serious control logic, and only involves the retrieval of data through a device driver. So the component of \texttt{ILEDControl} is actually completely implemented in implementation code. As we mentioned in the previous section, there is still control logic to verify for Dezyne in interfaces. In Figure \ref{fig:ILEDControl_event_table} the event table of \texttt{ILEDControl} is shown. In this table the blue rows are the events that the \texttt{ILEDControl} interface can execute. The \textit{States} column denotes the state we are in; and behavior is different depending on which state the interface is in. The second column shows guard conditions. These are conditionals that further influence what kind of behavior is allowed in a certain state. The \textit{Code} column shows the actual code that is executed, and the \textit{Next} column is the state the interface will be in after executing the code. Let us look at the first event, \texttt{initialise\_framebuffer}. This event, as the name suggests, initialises the framebuffer that is used to communicate with the LED matrix. When the system is in the \texttt{Idle} state, this event will result in a transition to the \texttt{Operating} state. If the system is already in the \texttt{Operating} state when the \texttt{initialise\_framebuffer} action is executed, then this is an illegal action, as denoted by the \texttt{illegal} keyword in the Code column. This makes sense, as we do not want to initialise an already initialised framebuffer, and once the \texttt{ILEDControl} is operating, the framebuffer should already be initialised. One of the key features of Dezyne is that, once we generate source code from this model, we are not allowed to execute the \texttt{initialise\_framebuffer} action in implementation code either, because in the model we specified that this should not be possible. It is these kind of checks from Dezyne that make sure the transition from model to implementation happens smoothly and without error. \par
+In contrast to the \texttt{initialise\_framebuffer} event, the \texttt{destruct\_framebuffer} event is only allowed to be executed if the interface is in the \texttt{Operating} state. If the system is in the \texttt{Idle} state, there is nothing to destruct, for in the \texttt{Idle} state we have not initialised the framebuffer.
 \\\\
-\texttt{ILEDControl} has an important task that is expressed in its guard conditions. It has the task to prevent the system from overriding a red LED with a blue LED. We mentioned this briefly in Section \ref{When the result of a check gives unsafe behavior}. Once a certain executed safety check gives as result that there is unsafe behavior, the LED will turn red. If a subsequent check then gives as result that there is safe behavior, it cannot turn the LED blue, because we do not know if the unsafe behavior has been recognized by someone or something yet. The fact that a blue LED cannot override a red LED is specified in the rows below the \texttt{light\_led\_blue} event. The system can only turn the LED blue if the system state is \texttt{Operating}, and the LED state is \texttt{Low} or \texttt{Blue}. If the LED state is \texttt{Red}, setting the LED blue is an illegal action, and thus cannot happen.
+\texttt{ILEDControl} has an important task that is expressed in its guard conditions. It has the task to prevent the system from overriding a red LED with a blue LED. We mentioned this briefly in Section \ref{When the result of a check gives unsafe behavior}. Once a certain executed safety check gives as result that there is unsafe behavior, the LED will turn red. If a subsequent check then gives as result that subsequent behavior is safe behavior, it cannot turn the LED blue, because we do not know if the unsafe behavior has yet been recognized by the system or someone controlling the system. The fact that a blue LED cannot override a red LED is specified in the rows below the \texttt{light\_led\_blue} event. The system can only turn the LED blue if the system state is \texttt{Operating} and if the LED state is \texttt{Low} or \texttt{Blue}. If the LED state is \texttt{Red}, setting the LED blue is an illegal action, and can thus not happen.
 \par
-How can one, then, ever turn the LED to blue once it has turned red? This is where the \texttt{reset\_led} event comes into play. The \texttt{reset\_led} action turns the led state to \texttt{Low}, so that the LED has the option to turn blue again.
+How can one, then, ever turn the LED blue once it has turned red? This is where the \texttt{reset\_led} event comes into play. The \texttt{reset\_led} event turns the LED state to \texttt{Low}, so that the LED has the option to turn blue again.
 \par
-Building this prevention to override a red LED with a blue LED at the abstraction level of \texttt{ILEDControl} makes sure that any component that uses the \texttt{ILEDControl} interface cannot somehow define behavior that would override a red LED with a blue LED.  
+Building this prevention to override a red LED with a blue LED at the abstraction level of \texttt{ILEDControl} makes sure that any component that uses the \texttt{ILEDControl} interface cannot somehow define behavior that would override a red LED with a blue LED. The use of this we will see when we elaborate the \texttt{Controller} component.
 
 
 \begin{figure}[H]
@@ -1165,22 +1087,316 @@ Building this prevention to override a red LED with a blue LED at the abstractio
     \label{fig:ILEDControl_event_table}
 \end{figure}
 
-We made an alternative view that shows the events per system state, as opposed to system states per event, as in Figure \ref{fig:ILEDControl_event_table}. This alternative view is given in Appendix \ref{Additional Models}. We have made an events per state and states per events view for all interfaces and components. We show the ones here that we think convey the purpose of the interface or component the clearest. The alternative view can, in general, be found in Appendix \ref{Additional Models} if the views are not the same.
+We made an alternative view that shows the events per system state, as opposed to system states per event, as is the case in Figure \ref{fig:ILEDControl_event_table}. This alternative view is given in Appendix \ref{Additional Models}. We have made an events per state and states per events view for all interfaces and components. We show the ones here that we think convey the purpose of the interface or component the best. The alternative view can, in general, be found in Appendix \ref{Additional Models} unless the views show exactly the same, which is the case when there is just one system state and one event.
 \\\\
-We made a sequence diagram of a particular trace through the events of \texttt{ILEDControl}. This sequence diagram is shown in Figure \ref{fig:ILEDControl_seq}. The Dezyne behavior verifier goes through every possible sequence of events, as opposed to just one particular sequence as is shown in the sequence diagram, but the sequence diagram is useful as a simulation of the model and to visualise aspects of the system.
+We made a sequence diagram of a particular trace through the events of \texttt{ILEDControl}. This sequence diagram is shown in Figure \ref{fig:ILEDControl_seq}. One should note that the Dezyne behavior verifier goes through every possible sequence of events, as opposed to just one particular sequence, as is the case in the sequence diagram. The sequence diagram is useful nonetheless as a simulation of the model and to visualise certain aspects of the system. Below the sequence diagram at the bottom of Figure \ref{fig:ILEDControl_seq} we can see the next actions that can be executed at the particular state of the system. We show these possible next actions here because in the case of the \texttt{ILEDControl} interface it highlights how stating an event as \texttt{illegal} prevents one from executing the event in a trace of the system. For subsequent sequence diagram figures we will not show the possible actions explicitly, and we will only show the sequence diagram itself. As we can see in Figure \ref{fig:ILEDControl_seq}, the only available next actions are \texttt{destruct\_framebuffer}, \texttt{light\_led\_red} and \texttt{reset\_led}. \texttt{light\_led\_blue} cannot be executed because we declared it to be illegal to execute \texttt{light\_led\_blue} if the LED is already red. It is only after a \texttt{reset\_led} action that we can turn the LED blue again.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControl_seq.png}
-    \caption{Sequence diagram showing a particular trace through \texttt{ILEDControl}}
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControl_seq_enhanced.png}
+    \caption{Sequence diagram showing a particular trace through \texttt{ILEDControl} and the next possible actions}
     \label{fig:ILEDControl_seq}
 \end{figure}
 
+\subsubsection{ISafetyCheck}
+The next interface we will look at is \texttt{ISafetyCheck}. \texttt{ISafetyCheck} is a simple interface that specifies the behavior of the five check components, namely \texttt{KineticEnergyCheck}, \texttt{RotationalEnergyCheck}, \texttt{ArmForceCheck}, \texttt{ArmTorqueCheck} and \texttt{ArmPositionCheck}. These five safety check components implement the \texttt{ISafetyCheck} interface. We will look at these components later in this section. The single event of the \texttt{ISafetyCheck} interface is shown in Figure \ref{fig:ISafetyCheck_state_table}. In the blue row we see the \texttt{<state>.<Initial>} state. This denotes, as the name suggests, the initial state of the interface. This state is shown if an interface or component does not define any states of its own. In the case of \texttt{ISafetyCheck}, the interface simple and need not keep track of any states of its own. The only event that the \texttt{ISafetyCheck} interface can execute is the \texttt{do\_check} event. This event denotes the execution of a safety check. Since this is an interface, \texttt{do\_check} is just a generic notion of a safety check. When we look at the components that implement \texttt{ISafetyCheck} we will see that the component associates a specific action with \texttt{do\_check}. In the Code column we can see that \texttt{do\_check} replies either the \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe} behavior type. The behavior types \texttt{Behavior.Safe} and \texttt{Behavior.Unsafe} are just like boolean types, but with more indicative names.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ISafetyCheck/ISafetyCheck_state_table.png}
+    \caption{State table of \texttt{ISafetyCheck}}
+    \label{fig:ISafetyCheck_state_table}
+\end{figure}
+
+Figure \ref{fig:Sequence diagram of ISafetyCheck.} shows the sequence diagram we created for the \texttt{ISafetyCheck} interface. Here we make a trace through the interface, and, because this is a simulation of the model, we are free to return either \texttt{Behavior\_Safe} or \texttt{Behavior\_Unsafe} after the execution of \texttt{do\_check}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/ISafetyCheck/ISafetyCheck_seq.png}
+    \caption{Sequence diagram of ISafetyCheck}
+    \label{fig:Sequence diagram of ISafetyCheck.}
+\end{figure}
+
+\subsubsection{ISensors}
+% ref: section on implementation
+\texttt{ISensors} defines five interfaces that correspond to a sensor or measuring device used in a safety check. The check on kinetic energy makes use of the accelerometer of the Sense HAT, the check on rotational energy makes use of the fused accelerometer, gyroscope and magnetometer data of the Sense HAT which are then used to obtain angular velocity, the arm force, torque and position are to be retrieved from robot Rose. Each \texttt{Sensor} defines only one event; this event retrieves the quantity that is to be checked. The sensors do not define any system states. In Figure \ref{fig:retrieve events} the \texttt{retrieve} events of respectively \texttt{KineticEnergyCheck}, \texttt{RotationalEnergyCheck}, \texttt{ArmForceCheck}, \texttt{ArmTorqueCheck} and \texttt{ArmPositionCheck} are given. In Figure \ref{fig:isensor_seq} their sequence diagrams are given in the same order. One may notice that the code columns define no code for these interfaces. That is because the retrieval of data is a purely implementation dependent task, and there is no control logic to check for Dezyne. In Section \ref{} we shall see how the retrieve events are bound to functions and how they are implemented.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ISensor/ISensor_state_table.png}
+    \caption{State table showing the \texttt{retrieve} events of the five safety checks}
+    \label{fig:retrieve events}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ISensor/ISensor_seq.png}
+    \caption{Sequence diagrams of the \texttt{ISensor} interfaces}
+    \label{fig:isensor_seq}
+\end{figure}
+
+\subsubsection{IResolver}
+\texttt{IResolver} is a single interface with five events that resolve values retrieved from sensors. Resolving a value in this context means translating a retrieved sensor value into something the Dezyne language can use in its control logic. Concretely, this means that the resolve events convert an obtained sensor value into \texttt{Behavior.Safe} and \texttt{Behavior.Unsafe} behavior types. This can be seen in the state table of Figure \ref{fig:IResolver_state_table}. Every resolve event either returns \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe}. Later we will see that the \texttt{Controller} uses this to turn the LED blue in case of a \texttt{Behavior.Safe} reply from the resolve event and to turn the LED red in case of a \texttt{Behavior.Unsafe} reply from the resolve event. The safety check components execute their own respective resolve event. \texttt{KineticEnergyCheck} executes \texttt{resolve\_ke\_from\_acc}, \texttt{RotationalEnergyCheck} executes \texttt{resolve\_re\_from\_ang\_vel}, \texttt{ArmForceCheck} executes \texttt{resolve\_arm\_force}, \texttt{ArmTorqueCheck} executes \texttt{resolve\_arm\_torque} and \texttt{ArmPositionCheck} executes \texttt{resolve\_arm\_position}.
+\par
+Just like with \texttt{ISafetyCheck} we are free to reply either \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe} in a simulation of the model, as can be seen in the sequence diagram of Figure \ref{fig:IResolver_seq}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/IResolver/IResolver_state_table.png}
+    \caption{State table of \texttt{IResolver}}
+    \label{fig:IResolver_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Figures/results/modelling_figures/IResolver/IResolver_seq.png}
+    \caption{Sequence diagram of \texttt{IResolver}}
+    \label{fig:IResolver_seq}
+\end{figure}
+
+% Ref to section SQ4
+One might wonder why \texttt{ISensor} consists of five separate interfaces, while \texttt{IResolver} has all resolve events in just one interface. This has to do with a useful modelling feature we used for \texttt{IResolver}. Since every safety check has to convert its retrieved sensor value to a dezyne control logic type, and since every \texttt{resolve} action does roughly the same thing, we generalized it to one interface that is used by all checks. If we refer back to the system view of Figure \ref{fig:safety_module_system_view}, we can see this usage of \texttt{IResolver}. All checks, except \texttt{BaseCaseCheck} (\texttt{BaseCaseCheck} does not actually check anything and serves as the base case or default element for the linked list of checks), are connected to the grey square on the right edge, this is the port of \texttt{IResolver}. This port is to be bound in implementation code to functions that actually resolve or convert retrieved sensor values into Dezyne control logic. We will see this binding in Section \ref{}.
+
+\subsubsection{BaseCaseCheck}
+We have now arrived at the first component, \texttt{BaseCaseCheck}. As was just mentioned, \texttt{BaseCaseCheck} does not check any behavior of the care robot and serves as the base case or default element for the linked list of checks above it. It should always be the last element. If one wishes to add a new safety check to the system, it can be added anywhere in the list of checks, so long as it is above \texttt{BaseCaseCheck}. \texttt{BaseCaseCheck} implements the \texttt{ISafetyCheck} interface. \texttt{BaseCaseCheck} does one thing, and it does it well; in conformance with its interface, it executes the \texttt{do\_check} event. The \texttt{do\_check} event of \texttt{BaseCaseCheck} always returns \texttt{Behavior.Safe}, this is the so called base case. This is because every time we execute a check the result of this check and the directly following check will be evaluated. If one or both of the checks replies \texttt{Behavior.Unsafe}, then this\texttt{Behavior.Unsafe} value is replied further down to the controller. One might ask why one check needs to evaluate the result of the next check. This is a consequence of the linked list structure of the checks. To be clear, the controller just tasks the first check to execute. That check then executes the next check, and the next check the following check, and so towards the base check. So it is really a particular check that executes the next check and evaluates both itself and that next check, the controller does not do this evaluation the controller. The controller only tasks the first check to execute. The task of the controller will be elaborated later this section. 
+\\
+Figure \ref{fig:basecasechekc_state_table} shows the state table we created for \texttt{BaseCaseCheck}. Here we see that it has only one event and always returns \texttt{Behavior.Safe}. Because the behavior of BaseCaseCheck is trivial we have omitted it here. It can be found in Section \ref{BaseCaseCheck_app} of Appendix \ref{Additional Models}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/BaseCaseCheck/BaseCaseCheck_state_table.png}
+    \caption{State table of \texttt{BaseCaseCheck}}
+    \label{fig:basecasechekc_state_table}
+\end{figure}
+
+\subsubsection{KineticEnergyCheck}
+We will now look at the \texttt{KineticEnergyCheck} component. \texttt{KineticEnergyCheck} implements the \texttt{ISafetyCheck} interface and it uses the \texttt{IResolver} and \texttt{ISensors} interfaces. The state table of \texttt{KineticEnergyCheck} is shown in Figure \ref{fig:KineticEnergyCheck_state_table}. Elaborating \texttt{KineticEnergyCheck} will be straightforward, as we have already elaborated all pieces it is composed of because we work through the system inside out. In Figure \ref{fig:KineticEnergyCheck_state_table} we can see that \texttt{KineticEnergyCheck} defines a single event, \texttt{do\_check}, in conformance with the interface it implements. Let us look at the Code column. Here we see that it calls the \texttt{retrieve\_ke\_from\_acc} event from the acceleration sensor interface to let the acceleration sensor obtain sensor data from the accelerometer, which can then be used to calculate kinetic energy. The raw value of kinetic energy is not usable in the Dezyne modelling language, so we convert this value to Dezyne usable control logic by calling the resolver's \texttt{resolve\_ke\_from\_acc} event. This event returns a Dezyne usable control logic type, namely \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe}, which we store as the result of the \texttt{KineticEnergyCheck}. We then then refer to our pointer, \texttt{iNext} which points to the next check in the list, and call the this next check. Looking back at the system view of Figure \ref{fig:safety_module_system_view}, we can see that the next check is \texttt{RotationalEnergyCheck}, but it might as well be any other check that we may add it the future. After calling the next check, we execute the the \texttt{and\_safety\_states}  function, which performs a boolean AND \footnote{This is a boolean AND if we define \texttt{Behavior.Unsafe} to be $0$ and \texttt{Behavior.Safe} to be $1$. A boolean AND will only return $1$ if both proponents are $1$. In terms of our function, the \texttt{\_and\_safety\_states} function will only return \texttt{Behavior.Safe} if both proponents have value \texttt{Behavior.Safe}.} on the Behavior types of \texttt{KineticEnergyCheck} and the next check. The purpose of this function has to do with what we mentioned when we elaborated \texttt{BaseCaseCheck}. There we mentioned that if one or both of the checks results in behavior type \texttt{Behavior.Unsafe}, then the \texttt{and\_safety\_states} returns \texttt{Behavior.Unsafe}. Otherwise, it returns \texttt{Behavior.Safe}, which would indicate that both individual checks replied \texttt{Behavior.Safe}. Finally, since the Controller is the component that calls \texttt{KineticEnergyCheck}, the return value of the \texttt{and\_safety\_states} function is returned to the controller. The controller will decide what to do with his value.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/KineticEnergyCheck/KineticEnergyCheck_state_table.png}
+    \caption{State table of \texttt{KineticEnergyCheck}}
+    \label{fig:KineticEnergyCheck_state_table}
+\end{figure}
+
+\texttt{KineticEnergyCheck} is a good opportunity for us to show the Dezyne verification results. The verification results are shown in Figure \ref{fig:kineticenergycheck_verification}. Verification goes from top to bottom. This indicates that, to verify \texttt{KineticEnergyCheck}, the \texttt{IAccelerationSensor}, \texttt{ISafetyCheck} and \texttt{IResolver} has to be verified first. It is only if these interfaces contain no errors that \texttt{KineticEnergyCheck} can possibly be given a positive result. It is thus convenient to have model the system in such a way that is divided into chunks that can be individually verified.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/KineticEnergyCheck/KineticEnergyCheck_verification.png}
+    \caption{Verification results for the \texttt{KineticEnergyCheck} component}
+    \label{fig:kineticenergycheck_verification}
+\end{figure}
+
+Let us now look at the sequence diagram of we created for \texttt{KineticEnergyCheck}. This sequence diagram is shown in Figure \ref{fig:kineticenergycheck_seq}. This sequence diagram visualises what we tried to explain concerning the \texttt{and\_safety\_states} function. \texttt{iKineticEnergyCheck} executes a \texttt{do\_check} event, which , after calling \texttt{resolve\_ke\_from\_acc}, returns either \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe}. Then the \texttt{do\_check} event of the next check is executed. This next \texttt{do\_check} also returns either \texttt{Behavior.Safe} or \texttt{Behavior.Unsafe} (internally, the next check's \texttt{do\_check} event also executes a resolve action. The result of this resolve is what is actually returned by the next \texttt{do\_check}, but this is not shown). The first part of the sequence diagram of Figure \ref{fig:kineticenergycheck_seq}, starting at \texttt{iKineticEnergyCheck} all the way to \texttt{iResolver} and back to \texttt{iKineticEnergyCheck}, returns \texttt{Behavior.Safe}, because the two executed checks both returned \textt{Behavior.Safe}. The second time we make this round, the first check returns \texttt{Behavior.Safe} and the second check returns \texttt{Behavior.Unsafe}. This results in \texttt{Behavior.Unsafe} being returned to \texttt{iKineticEnergyCheck}, because there was a check that returned unsafe behavior. The same holds for the third round. The fourth round returns \texttt{Behavior.Safe} again, because the two checks both returned \texttt{Behavior.Safe}. Although this is not shown in the sequence diagram, if both checks return \texttt{Behavior.Unsafe}, \texttt{Behavior.Unsafe} is returned to \texttt{iKineticEnergyCheck} as well.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/KineticEnergyCheck/KineticEnergyCheck_seq.png}
+    \caption{Sequence diagram of \texttt{KineticEnergyCheck}}
+    \label{fig:kineticenergycheck_seq}
+\end{figure}
+
+\subsubsection{RotationalEnergyCheck, ArmForceCheck, ArmTorqueCheck and ArmPositionCheck}
+\texttt{RotationalEnergyCheck}, \texttt{ArmForceCheck}, \texttt{ArmTorqueCheck} and \texttt{ArmPositionCheck} all behave very similarly to \texttt{KineticEnergyCheck}, except that they call the the retrieve event and resolve event for their respective quantities that they want to check. Figure \ref{fig:RotationalEnergyCheck_state_table}, Figure \ref{fig:ArmForceCheck_state_table}, Figure \ref{fig:ArmTorqueCheck_state_table} and Figure \ref{fig:ArmPositionCheck_state_table} for \texttt{RotationalEnergyCheck}, \texttt{ArmForceCheck}, \texttt{ArmTorqueCheck} and \texttt{ArmPositionCheck} respectively. We have omitted the sequence diagrams for these checks here. The sequence diagrams for these checks can be found in Section \ref{aRotationalEnergyCheck}, Section \ref{aArmForceCheck}, Section \ref{aArmTorqueCheck} and Section \ref{aArmPositionCheck} of Appendix \ref{Additional Models} respectively.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/RotationalEnergyCheck/RotationalEnergyCheck_state_table.png}
+    \caption{State table for \texttt{RotationalEnergyCheck}}
+    \label{fig:RotationalEnergyCheck_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmForceCheck/ArmForceCheck_state_table.png}
+    \caption{State table for \texttt{ArmForceCheck}}
+    \label{fig:ArmForceCheck_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmTorqueCheck/ArmTorqueCheck_state_table.png}
+    \caption{State table for \texttt{ArmTorqueCheck}}
+    \label{fig:ArmTorqueCheck_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmPositionCheck/ArmPositionCheck_state_table.png}
+    \caption{State table for \texttt{ArmPositionCheck}}
+    \label{fig:ArmPositionCheck_state_table}
+\end{figure}
+
+If one wants to add a new check to the system, this is likely going to be its base control structure also. The differences will be in the functions the retrieve and resolve functions are bound to, as we will see in Section \ref{}.
+
+% ref to section SQ4
+\subsubsection{IController}
+The final interface and component of the safety module system are \texttt{IController} and \texttt{Controller} respectively. We will first elaborate the \texttt{IController} interface. As \texttt{IController} is the interface of \texttt{Controller}, it specifies what behavior the controller should conform to. The controller is the component that governs the safety module system, it starts the check sequence and controls the LED matrix.
+\par
+In Figure \ref{fig:IController_state_chart} the state chart of \texttt{IController} is given. Here we see that when the \texttt{initialise} event fires, the \texttt{initialise\_imu}, \texttt{initiliase\_mutexes} and \texttt{initialise\_semaphores} are called (\texttt{initialise\_framebuffer} of \texttt{ILEDControl} is called in the \texttt{Controller} but not in its interface. This is a consequence of the way the system is modelled. It has no implications for the operational behavior of the system, though) and the system jumps from the \texttt{Idle} to the \texttt{Operating state}. Calling \texttt{initialise\_imu}, \texttt{initiliase\_mutexes} and \texttt{initialise\_semaphores} on the \texttt{initialise} event ensures that the IMU, mutexes and semaphores used by the safety module are always properly initialised before the system will execute its control loop in the \texttt{Operating} state. The safety module makes use of mutexes and semaphores because the implementation is multithreaded. In a similar manner as \texttt{initialise}, when the \texttt{destruct} event fires, the \texttt{destruct\_mutexes} and \texttt{destruct\_semaphores} are called. The IMU need not be explicitly destructed. This destruct action is not supposed to execute, however, as the safety module is expected to run indefinitely in the \texttt{Operating} state, or at least until Rose shuts down.
+\par
+In the \texttt{Operating} state \texttt{do\_checks} calls the first check of the linked list of checks. \texttt{do\_checks} is shown twice in Figure \ref{fig:IController_state_chart}, because the interface specifies that \texttt{do\_checks} either returns \texttt{UnsafeTriggerered.Yes} or \texttt{UnsafeTriggered.No}. The notions of \texttt{UnsafeTriggerered.Yes} and \texttt{UnsafeTriggered.No} are used to monitor whether one or more of the checks returned unsafe behavior.
+\par
+Now, to explain the controller further, it is much more useful to go right to the \texttt{Controller} at this stage, then to go through the event table and sequence diagram of \texttt{IController}. Therefore, we will omit these diagrams of \texttt{IController} here.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/results/modelling_figures/IController/IController_state_chart.png}
+    \caption{State chart of IController}
+    \label{fig:IController_state_chart}
+\end{figure}
+
+\subsubsection{Controller}
+Let us now look at the final component: \texttt{Controller}. In Figure \ref{fig:controll_event_table} the event table of the controller is shown. We have already elaborated \texttt{initialise} and \texttt{destruct} in the controller its interface. In addition to the behavior specified by its interface, the controller also calls \texttt{initialise\_framebuffer} when the \texttt{initialise} events fires as well as \texttt{destruct\_framebuffer} when the \texttt{destruct} events fires. Because the event table omits an important conditional in the code column, we will refer to the actual dezyne code we used to create the model for the \texttt{do\_checks} event, which is listed in Code \ref{mdo_checks}. For the \texttt{reset} event, we refer to Figure \ref{fig:controll_event_table}.
+\par
+Let us first look at \texttt{do\_checks}. Upon entering the \texttt{do\_checks} event, we call the \texttt{do\_check} event of \texttt{iNext}. \texttt{iNext} points to the the next check in the linked list of checks. In the case of the controller, \texttt{iNext} always points to the first check in the list. On lines 5 to 7 there is an if statement that is entered when the result of \texttt{iNext.do\_check} is \texttt{Behavior.Unsafe}. When will the result of \texttt{iNext.do\_check} be \texttt{Behavior.Unsafe}? Recall that when we execute a check, the check will internally call \texttt{do\_check} of the next check. So if we start at the Controller, which calls the \texttt{do\_check} of \texttt{KineticEnergyCheck}, \texttt{KineticEnergyCheck}'s \texttt{do\_check} will call \texttt{RotationalEnergy}'s \texttt{do\_check}, \texttt{RotationalEnergy}'s \texttt{do\_check} will call \texttt{GripArmForce}'s \texttt{do\_check}, etc. This will be done all the way to \texttt{BaseCaseCheck}'s \texttt{do\_check}. Recall that \texttt{BaseCaseCheck}'s \texttt{do\_check} always returns \texttt{Behavior.Safe}. Further recall that every check executes a boolean AND function on its own and next check's result, returning \texttt{Behavior.Unsafe} when either one or both of the checks reply \texttt{Behavior.Unsafe}. Since the recursion stops at \texttt{BaseCaseCheck}, we can traverse the linked list back up again, finishing all \texttt{do\_check} calls. Along the way back up, every check will perform the boolean AND function with the subsequently executed check. This means that, ultimately, the result of \texttt{iNext.do\_check} in the controller is the result of all boolean ANDs from all checks that where called on the way through the linked list. This implies that the result of \texttt{iNext.do\_check} in the controller is \texttt{Behavior.Unsafe} as soon as one or more of the checks result in \texttt{Behavior.Unsafe}.
+\par
+% TODO: ref to section
+If the result of \texttt{iNext.do\_check} in the controller is \texttt{Behavior.Unsafe}, we enter the if statement on Line 5 of Code \ref{mdo_checks}. Since the safety module has detected unsafe behavior, we will now instruct \texttt{iLEDControl} to light the LED matrix red. Signalling unsafe behavior like this is the safety module's most important task. In Section \ref{} we shall see that the thread that is responsible for turning the LED red is scheduled with the highest priority and that this thread is governed by the Xenomai cokernel, as to ensure real-time behavior.
+\par
+On Line 7 of Code \ref{mdo_checks} we set \texttt{unsafe\_acknowledged}, a boolean variable, to \texttt{false}. The boolean variable \texttt{unsafe\_acknowledged} denotes whether the operator of Rose, or any system that monitors Rose for that matter, has acknowledged or recognized that unsafe behavior has taken place. On Lines 11 to 16 we can see that the controller replies \texttt{UnsafeTriggerd.Yes} if \texttt{unsafe\_acknowledged} has the value of \texttt{false} and that the controller replies \texttt{UnsafeTriggered.No} if \texttt{unsafe\_acknowledged} has the value of \texttt{true}. The mechanism of \texttt{unsafe\_acknowledged} is related to something we described when we elaborated the \texttt{ILEDControl} interface. When we elaborated the \texttt{ILEDControl} interface, we described the build in mechanism of that interface to prevent one to override a red LED with a blue LED. It is for this reason that we can only set the LED to blue when \texttt{unsafe\_acknowledged} has the value of \texttt{true}, for so long no one or nothing has acknowledged that the robot has performed unsafe behavior the LED matrix should stay red. In Figure \ref{fig:controll_event_table} we can see that the \texttt{reset} event sets \texttt{unsafe\_acknowledged} to the value of \texttt{true} and that it instructs the \texttt{iLEDControl} to reset the LED matrix. The \texttt{reset} action corresponds to the operator of the robot acknowledging the unsafe behavior. \texttt{reset} is the only action in the system that can intstruct the \texttt{iLEDControl} to reset the LED matrix and to acknowledge unsafe behavior. The notions of \texttt{UnsafeTriggered.Yes} and \texttt{UnsafeTriggered.No} of Code \ref{mdo_checks} are related to this. So long as the unsafe behavior is not acknowledged, the controller will return \texttt{UnsafeTriggered.Yes}. It is only if no unsafe behavior has yet been detected or if the unsafe behavior has been acknowledged by the operator of the robot that the controller's \texttt{do\_check} event will return \texttt{Unsafe.Triggered.No}.
+
+ \begin{figure}[H]
+     \centering
+     \includegraphics[width=\textwidth]{Figures/results/modelling_figures/Controller/Controller_event_table.png}
+     \caption{Event table of \texttt{Controller}}
+     \label{fig:controll_event_table}
+ \end{figure}
+ 
+\begin{minted}[mathescape,
+               numbersep=5pt,
+               frame=lines,
+               framesep=5mm,
+               linenos]{haskell}
+-- $\label{mdo_checks}$
+on iController.do_checks(): {
+	Behavior safetyState = iNext.do_check();
+	
+	if (safetyState == Behavior.Unsafe) {
+		iLEDControl.light_led_red(red);
+		unsafe_acknowledged = false;
+	} else if(unsafe_acknowledged) {
+		iLEDControl.light_led_blue(blue);
+	}
+	if(!unsafe_acknowledged) {
+		reply(UnsafeTriggered.Yes);
+	}
+	else {
+		reply(UnsafeTriggered.No);
+	}
+}
+
+ \end{minted} 
+ 
+In the verification results on the \texttt{Controller} component shown in Figure \ref{fig:controll_verif}, we see once again that to verify a component, we first need to verify and ensure that none of the interfaces it implements or uses contains verification errors.
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/Controller/Controller_verification.png}
+    \caption{Verification results for \texttt{Controller}}
+    \label{fig:controll_verif}
+\end{figure}
+
+Figure \ref{fig:controller_seq} shows a sequence diagram of the Controller. Here we first execute the \texttt{initialise} action to initialise the system, then we execute \texttt{do\_checks} multiple times. This sequence diagram does not show us a completely recursive trace through all the safety checks, sadly. This is a result of making the model generic by using a linked list like data structure for the checks. Because we simulate the model to create a sequence diagram of the controller, we get to choose what value \texttt{iNext.do\_check} returns, and the system need not recursively traverse all checks to determine the correct return value for \texttt{iNext.do\_check}. Note, however, that the operation of a simulation like this is different from what the verifier does; the verifier \textit{does} need to recursively traverse through the checks. It furthermore needs to traverse any particular sequence of events as to ensure there are no errors hiding in a particular path through the system.
+\par
+We added a sequence diagram of a less generic, earlier version of the Controller to show how a sequence diagram looks that shows multiple checks being executed in sequence to Appendix \ref{Additional Models}. This sequence diagram can be found in Section \ref{aController}. This sequence diagram uses old naming conventions that are not used anymore.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/Controller/Controller_seq.png}
+    \caption{Sequence diagram of the controller}
+    \label{fig:controller_seq}
+\end{figure}
+
+
 \subsubsection{Functional behavior}
+So far, when we verified the models, we have only looked at static behavior verification. Static behavior checking concerns itself with verification of absense of deadlocks, absence of livelocks, detection of mismatches between interface and component and other concepts related to deterministic behavior of a system. At the time of writing, a prototype version of Dezyne provides us with funcional behavior verification as well. Functional behavior checking concerns itself with checks whether a system, after executing a set of actions, is in the system state that we expect it to be. We made several of these functional behavior checks. Because this is prototype functionality of the toolset, we cannot create a diagram to show the specification of such functional behavior, so we show the specification of the functional behavior in the modelling language itself.
+\par
+Code \ref{mfunctional_requirement} shows the functional behavior specification for \texttt{KineticEnergyCheck}. Code \ref{modified_ke} shows part of a modified version of \texttt{KineticEnergyCheck} that conforms with the syntax required to use the functional requirement verifier. Actually, the part that is shown is a modification of \texttt{IResolver} in which \texttt{IResolver} i now part of the safety check itself and no long returns a value, but calls either \texttt{iKineticEnergyCheck.BehaviorSafe()}, \texttt{iKineticEnergyCheck.BehaviorUnsafe()}, which corresponds to the same behavior as returning \texttt{Behavior.Safe} and \texttt{Behavior.Unsafe} respectively. In Figure \ref{mfunctional_requirement}, the \texttt{Requirement} keyword is used to define a functional behavior specification. We gave this specification the name \texttt{AnyUnsafe}. This specification specifically checks if the \texttt{myState} variable has the value we expect it to be. If, in Code \ref{modified_ke}, we were to remove line 14, this would get through the static behavior verifier as if nothing happened, but if we run this through the functional behavior verifier, we get an error, because the state does not accord with what we specified in the functional specification.
+
+\begin{minted}[mathescape,
+               numbersep=5pt,
+               frame=lines,
+               framesep=5mm,
+               linenos]{haskell}
+-- $\label{mfunctional_requirement}$
+requirement AnyUnsafe {
+	on KineticEnergyCheck;
+	provides ISafetyCheck iKineticEnergyCheck;
+	requires IAccelerationSensor iAccelerationSensor;
+	requires ISafetyCheck iNext;
+	requires IResolver iResolver;
+
+	behaviour {
+		Behavior myState = Behavior.Safe;
+		bool expected = false;
+
+		on iKineticEnergyCheck.do_check(): {
+		   myState = Behavior.Safe;
+		   expected = true;
+		}
+
+		on iNext.BehaviorUnsafe(),
+		   iResolver.BehaviorUnsafe(): {
+		   myState = Behavior.Unsafe;
+		   if(expected) {
+		   	 expected = false;
+		   } else {
+		     iKineticEnergyCheck.BehaviorUnsafe();
+		   }
+		}
+
+		on iNext.BehaviorSafe(),
+		   iResolver.BehaviorSafe(): {
+		   if(expected) {
+		   	  myState = Behavior.Safe;
+			  expected = false;
+		   } else {
+		   	  if(myState == Behavior.Safe) {
+			     iKineticEnergyCheck.BehaviorSafe();
+			  } else {
+			  	 iKineticEnergyCheck.BehaviorUnsafe();
+			  }
+		   }
+		}
+	}
+}
+\end{minted} 
+
+\begin{minted}[mathescape,
+               numbersep=5pt,
+               frame=lines,
+               framesep=5mm,
+               linenos]{haskell}
+-- $\label{modified_ke}$
+on iResolver.BehaviorUnsafe(),
+	iNext.BehaviorUnsafe(): {
+	myState = Behavior.Unsafe;
+
+	if(expected) {
+	    expected = false;
+	} else {
+    	iKineticEnergyCheck.BehaviorUnsafe();
+	}
+}
+ 
+\end{minted}
+
+Similar functional specifcations have been made for the other safety check components. For the generated source code that is to be bound to implementation code, we have used the non-functional requirement model, however, as this model has a more convenient syntax to work with.
 
 \subsection{Other models of the safety module system}
+% TODO: Gloss UML
+In this section we present two models that are used to model aspects of the safety module system that are not captured by Dezyne. The first model shows the various threads of the safety module. The second model shows a UML class diagram showing the representation of care robot Rose the safety module utlizes.
+
+\subsubsection{Threading model}
+Let us first look at the threading model. The safety module is multithreaded, which means it executes multiple threads concurrently \ref{blocking}.
+\subsubsection{Care robot class diagram}
 \label{Other models of the system}
 
+\section{Implementation}
 
 \chapter{Conclusion, Recommendations and discussion}
 \section{Conclusion}
@@ -1206,13 +1422,158 @@ We made a sequence diagram of a particular trace through the events of \texttt{I
 \chapter{Additional Models}
 \label{Additional Models}
 This Appendix gives additional models as mentioned in Section \ref{Modelling and Dezyne} of the Results.
-\begin{figure}
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/system_view/system_view_alt.png}
+    \includegraphics[width=0.45\textwidth]{Figures/results/modelling_figures/system_view/system_view_alt.png}
     \caption{Alternative representation of the system view given in Section \ref{System overview}.}
     \label{fig:system_view_alt}
 \end{figure}
-\chapter{Repositor}
+
+
+\section{ILEDControl}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControl_state_table.png}
+    \caption{State table of \texttt{ILEDControl}}
+    \label{fig:ILEDControl_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ILEDControl/ILEDControlStateChart.png}
+    \caption{State chart of \texttt{ILEDControl}}
+    \label{fig:ILEDControl_state_chart}
+\end{figure}
+
+\section{ISafetyCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ISafetyCheck/ISafetyCheck_state_chart.png}
+    \caption{State chart of \texttt{ISafetyCheck}}
+    \label{fig:ISafetyCheck_state_chart}
+\end{figure}
+
+\section{BaseCaseCheck}
+\label{BaseCaseCheck_app}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/BaseCaseCheck/BaseCaseCheck_seq.png}
+    \caption{Sequence diagram of \texttt{BaseCaseCheck}}
+    \label{fig:BaseCaseCheck_seq}
+\end{figure}
+
+\section{RotationalEnergyCheck}
+\label{aRotationalEnergyCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/RotationalEnergyCheck/RotationalEnergyCheck_seq.png}
+    \caption{Sequence diagram of \texttt{RotationalEnergyCheck}}
+    \label{fig:RotationalEnergyCheck_seq}
+\end{figure}
+
+
+\section{ArmForceCheck}
+\label{aArmForceCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmForceCheck/ArmForceCheck_seq.png}
+    \caption{Sequence diagram of \texttt{ArmForceCheck}}
+    \label{fig:ArmForceCheck_seq}
+\end{figure}
+
+
+\section{ArmTorqueCheck}
+\label{aArmTorqueCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmTorqueCheck/ArmTorqueCheck_seq.png}
+    \caption{Sequence diagram of \texttt{ArmTorqueCheck}}
+    \label{fig:ArmTorqueCheck_seq}
+\end{figure}
+
+
+
+\section{RotationalEnergyCheck}
+\label{aRotationalEnergyCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmTorqueCheck/ArmTorqueCheck_seq.png}
+    \caption{Sequence diagram of \texttt{ArmTorqueCheck}}
+    \label{fig:ArmTorqueCheck_seq}
+\end{figure}
+
+
+
+\section{ArmPositionCheck}
+\label{aArmPositionCheck}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/ArmPositionCheck/ArmPositionCheck_seq.png}
+    \caption{Sequence diagram of \texttt{ArmPositionCheck}}
+    \label{fig:ArmPositionCheck_seq}
+\end{figure}
+
+\section{IController}
+\label{IController}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/IController/IController_event_table.png}
+    \caption{Event table of \texttt{IController}}
+    \label{fig:IController_event_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/IController/IController_state_table.png}
+    \caption{State table of \texttt{IController}}
+    \label{fig:IController_state_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/results/modelling_figures/IController/IController_seq.png}
+    \caption{Sequence diagram of \texttt{IController}}
+    \label{fig:IController_seq}
+\end{figure}
+
+\section{Controller}
+\label{aController}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/Controller/Controller_state_table.png}
+    \caption{State table of \texttt{Controller}}
+    \label{fig:controll_state_table}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/results/modelling_figures/Controller/Controller_state_chart.png}
+    \caption{State chart of \texttt{Controller}}
+    \label{fig:controll_old}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/results/modelling_figures/Controller/old_Controller_seq.png}
+    \caption{Old sequence diagram of \texttt{Controller} showing multiple checks being executed in sequence}
+    \label{fig:controll_old}
+\end{figure}
+
+
+
+\chapter{<Appendix B>}
 \chapter{Documentation}
 \end{appendices}
 
